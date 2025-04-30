@@ -21,7 +21,6 @@ import java.util.Optional;
 public class PlantService {
 
     private final PlantRepository plantRepository;
-    private final FytaModelMapperService mapper;
 
     @Transactional
     public void saveOrUpdatePlant(PlantEntity plantEntity, Plant plantMeasurement) {

@@ -1,18 +1,22 @@
 package ch.cheese.plants.dto;
 
 import lombok.Data;
+
 import java.util.List;
 
 @Data
-public class Plant {
-    private int id;
-    private String nickname;
-    private String scientificName;
-    private String commonName;
-    private List<Measurements> measurements;
+//@JsonIgnoreProperties(ignoreUnknown = true)
+public class PlantMeasurementsResponse {
+
+    private List<MeasurementDto> measurements;
+
     private List<DliLightDTO> dli_light;
+
     private AbsoluteValues absolute_values;
+
     private Thresholds thresholds;
+
     private Fertilisation fertilisation;
-    private List<ThresholdList> thresholds_list;
+
+    private List<Thresholds> thresholds_list;
 }

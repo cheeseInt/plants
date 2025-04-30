@@ -3,23 +3,21 @@ package ch.cheese.plants.controller;
 import ch.cheese.plants.dto.*;
 import ch.cheese.plants.mapper.FytaModelMapperService;
 import ch.cheese.plants.service.PlantService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
 public class PlantController {
 
     private final PlantService plantService;
     private final FytaModelMapperService fytaModelMapperService;
-    private final ObjectMapper objectMapper;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -138,7 +136,7 @@ public class PlantController {
         }
     }
 
-    public Plant getPlantMeasurements(String plantId, String timeline, String accessToken) {
+    public PlantMeasurementsResponse getPlantMeasurements(String plantId, String timeline, String accessToken) {
         String url = MEASUREMENTS_URL_TEMPLATE + plantId;
 
         Map<String, Object> body = Map.of(
@@ -152,17 +150,15 @@ public class PlantController {
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
+            ResponseEntity<PlantMeasurementsResponse> response = restTemplate.exchange(
                     url,
                     HttpMethod.POST,
                     request,
-                    String.class
+                    PlantMeasurementsResponse.class
             );
 
-            String json = response.getBody();
-            log.debug("📦 Measurement JSON für Pflanze {}: {}", plantId, json);
+            return response.getBody();
 
-            return fytaModelMapperService.mapPlant(json);
         } catch (Exception e) {
             log.error("❌ Failed to fetch plant measurements for ID {}: {}", plantId, e.getMessage(), e);
             return null;

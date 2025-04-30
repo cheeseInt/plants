@@ -3,11 +3,14 @@ package ch.cheese.plants.mapper;
 import ch.cheese.plants.dto.*;
 import ch.cheese.plants.entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-@Component
+@Slf4j
+@Service
 @RequiredArgsConstructor
 public class FytaModelMapperService {
 
