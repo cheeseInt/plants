@@ -1,5 +1,8 @@
 package ch.cheese.plants;
 
+import ch.cheese.plants.dto.MyPlants;
+import ch.cheese.plants.dto.Plant;
+import ch.cheese.plants.dto.PlantEntry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -97,7 +100,7 @@ public class PlantImporter {
     /**
      * Fetch sensor measurements for a plant ID.
      * @param plantId the plant ID
-     * @return Plant with measurement data
+     * @return Plant with measurement dto
      */
     private Plant fetchPlantMeasurements(Integer plantId) throws IOException {
         String urlString = plantMeasurementsBaseUrl + plantId;

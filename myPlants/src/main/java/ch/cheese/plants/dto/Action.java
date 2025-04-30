@@ -1,0 +1,11 @@
+package ch.cheese.plants.dto;
+
+import lombok.Data;
+
+@Data
+public class Action {
+    private String action;
+    private String title;
+    private String description;
+    private Integer priority;
+}

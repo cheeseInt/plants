@@ -1,5 +1,9 @@
 package ch.cheese.plants;
 
+import ch.cheese.plants.dto.CareRequest;
+import ch.cheese.plants.entity.PlantCareEntity;
+import ch.cheese.plants.entity.PlantEntity;
+import ch.cheese.plants.repository.PlantCareRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

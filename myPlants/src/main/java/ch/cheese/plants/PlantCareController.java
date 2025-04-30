@@ -1,5 +1,6 @@
 package ch.cheese.plants;
 
+import ch.cheese.plants.dto.CareRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
