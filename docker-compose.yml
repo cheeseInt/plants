@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+        postgres:
+                image: postgres:16
+                container_name: fyta_postgres
+                restart: always
+                ports:
+                        - "5432:5432"
+                environment:
+                        POSTGRES_USER: fytauser
+                        POSTGRES_PASSWORD: fytapassword
+                        POSTGRES_DB: fytadb
+                volumes:
+                        - postgres_data:/var/lib/postgresql/data
+
+        plants-core:
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                container_name: fyta_core
+                depends_on:
+                        - postgres
+                environment:
+                        - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fytadb
+                        - SPRING_DATASOURCE_USERNAME=fytauser
+                        - SPRING_DATASOURCE_PASSWORD=fytapassword
+                        - SPRING_PROFILES_ACTIVE=core
+                ports:
+                        - "8055:8055"
+                command: java -jar core.jar
+
+        care-ui:
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                container_name: fyta_ui
+                depends_on:
+                        - plants-core
+                ports:
+                        - "8056:8056"
+                environment:
+                        - SPRING_PROFILES_ACTIVE=ui
+                command: java -jar ui.jar
+
+volumes:
+        postgres_data:

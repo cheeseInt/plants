@@ -7,13 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="myPlants" />
+        <module name="care-ui" />
+        <module name="plants-core" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="myPlants" options="-parameters" />
+      <module name="care-ui" options="-parameters" />
+      <module name="plants-core" options="-parameters" />
     </option>
   </component>
 </project>

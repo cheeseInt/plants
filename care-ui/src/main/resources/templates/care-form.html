@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Care Input</title>
+</head>
+<body>
+<h1>Pflege eingeben</h1>
+<form th:action="@{/care}" th:object="${careForm}" method="post">
+
+    <label>Pflanze:</label>
+    <select th:field="*{nickname}">
+        <option th:each="p : ${plants}" th:value="${p.nickname}" th:text="${p.nickname}"></option>
+    </select>
+
+    <label>Wasser (L):</label>
+    <input type="number" step="0.1" th:field="*{waterInLiters}"/><br/>
+
+    <label>Dünger (ml):</label>
+    <input type="number" step="1" th:field="*{fertilizerInMl}"/><br/>
+
+    <label>Datum:</label>
+    <input type="date" th:field="*{date}"/><br/>
+
+    <button type="submit">Senden</button>
+</form>
+</body>
+</html>

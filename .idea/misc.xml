@@ -6,6 +6,8 @@
       <list>
         <option value="$PROJECT_DIR$/restclient/pom.xml" />
         <option value="$PROJECT_DIR$/myPlants/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/care-ui/pom.xml" />
       </list>
     </option>
   </component>

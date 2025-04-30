@@ -3,7 +3,7 @@
   <component name="SonarLintProjectSettings">
     <option name="moduleMapping">
       <map>
-        <entry key="myPlants" value="restclient" />
+        <entry key="plants-core" value="restclient" />
       </map>
     </option>
   </component>
