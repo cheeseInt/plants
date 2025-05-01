@@ -14,7 +14,7 @@ public class SensorEntityMapper {
         entity.setHas_sensor(dto.isHas_sensor());
         entity.setStatus(dto.getStatus());
         entity.setVersion(dto.getVersion());
-        entity.set_battery_low(dto.is_battery_low());
+        entity.setIs_battery_low(dto.is_battery_low());
         entity.setReceived_data_at(dto.getReceived_data_at());
         return entity;
     }

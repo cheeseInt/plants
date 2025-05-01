@@ -9,14 +9,14 @@ import lombok.Data;
 public class NotificationsEntity {
 
     @JsonProperty("light")
-    private boolean light;
+    private Boolean light;
 
     @JsonProperty("temperature")
-    private boolean temperature;
+    private Boolean temperature;
 
     @JsonProperty("water")
-    private boolean water;
+    private Boolean water;
 
     @JsonProperty("nutrition")
-    private boolean nutrition;
+    private Boolean nutrition;
 }

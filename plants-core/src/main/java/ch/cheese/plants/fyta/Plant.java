@@ -22,7 +22,7 @@ public class Plant {
     @JsonProperty("family_id")
     private String family_id;
     @JsonProperty("is_shared")
-    private boolean is_shared;
+    private Boolean is_shared;
     @JsonProperty("owner")
     private Owner owner;
     @JsonProperty("peers")
@@ -48,7 +48,7 @@ public class Plant {
     @JsonProperty("light_optimal_hours")
     private int light_optimal_hours;
     @JsonProperty("eligibility")
-    private boolean eligibility;
+    private Boolean eligibility;
     @JsonProperty("temperature_status")
     private int temperature_status;
     @JsonProperty("light_status")
@@ -66,9 +66,9 @@ public class Plant {
     @JsonProperty("care_tips_count")
     private int care_tips_count;
     @JsonProperty("has_remote_hub")
-    private boolean has_remote_hub;
+    private Boolean has_remote_hub;
     @JsonProperty("has_remote_sensor")
-    private boolean has_remote_sensor;
+    private Boolean has_remote_sensor;
     @JsonProperty("garden")
     private Garden garden;
     @JsonProperty("sensor")
@@ -76,9 +76,9 @@ public class Plant {
     @JsonProperty("hub")
     private Hub hub;
     @JsonProperty("isSilent")
-    private boolean isSilent;
+    private Boolean isSilent;
     @JsonProperty("noOfbadge")
     private int noOfbadge;
     @JsonProperty("isBadge")
-    private boolean isBadge;
+    private Boolean isBadge;
 }

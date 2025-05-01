@@ -7,6 +7,6 @@ import java.util.List;
 public class Device_menuDto {
     private List<String> actions;
     private List<String> buttons;
-    private boolean live_mode_enabled;
-    private boolean diagnose_enabled;
+    private Boolean live_mode_enabled;
+    private Boolean diagnose_enabled;
 }

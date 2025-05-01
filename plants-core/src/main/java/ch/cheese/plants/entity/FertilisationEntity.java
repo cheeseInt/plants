@@ -15,5 +15,5 @@ public class FertilisationEntity {
     private String fertilise_at;
 
     @JsonProperty("was_repotted")
-    private boolean was_repotted;
+    private Boolean was_repotted;
 }

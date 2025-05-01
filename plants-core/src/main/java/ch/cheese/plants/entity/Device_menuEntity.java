@@ -12,6 +12,6 @@ public class Device_menuEntity {
     @ElementCollection
     private List<DeviceActionEntity> actions;
     private List<String> buttons;
-    private boolean live_mode_enabled;
-    private boolean diagnose_enabled;
+    private Boolean live_mode_enabled;
+    private Boolean diagnose_enabled;
 }

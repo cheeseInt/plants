@@ -12,7 +12,7 @@ public class SensorEntity {
     private String id;
 
     @JsonProperty("has_sensor")
-    private boolean has_sensor;
+    private Boolean has_sensor;
 
     @JsonProperty("status")
     private int status;
@@ -21,7 +21,7 @@ public class SensorEntity {
     private String version;
 
     @JsonProperty("is_battery_low")
-    private boolean is_battery_low;
+    private Boolean is_battery_low;
 
     @JsonProperty("received_data_at")
     private String received_data_at;

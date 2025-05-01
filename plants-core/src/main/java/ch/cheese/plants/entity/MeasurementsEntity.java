@@ -72,4 +72,5 @@ public class MeasurementsEntity {
     private MeasurementValueEntity salinity;
 
     private String battery;
+
 }

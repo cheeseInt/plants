@@ -18,7 +18,7 @@ public class PlantEntity {
     private int status;
     private int plant_id;
     private String family_id;
-    private boolean is_shared;
+    private Boolean is_shared;
 
     private String index;
     private int wifi_status;
@@ -29,7 +29,7 @@ public class PlantEntity {
     private String received_data_at;
     private int temperature_optimal_hours;
     private int light_optimal_hours;
-    private boolean eligibility;
+    private Boolean eligibility;
     private int temperature_status;
     private int light_status;
     private int moisture_status;
@@ -42,13 +42,13 @@ public class PlantEntity {
     private int drainage;
     private double light_factor;
     private int soil_type_id;
-    private boolean gathering_data;
-    private boolean is_illegal;
-    private boolean not_supported;
-    private boolean sensor_update_available;
+    private Boolean gathering_data;
+    private Boolean is_illegal;
+    private Boolean not_supported;
+    private Boolean sensor_update_available;
     private String location;
-    private boolean verification;
-    private boolean is_productive_plant;
+    private Boolean verification;
+    private Boolean is_productive_plant;
     private String dismissed_sensor_message_at;
 
     @Lob
@@ -95,8 +95,8 @@ public class PlantEntity {
     private NotificationsEntity notifications;
 
     private int care_tips_count;
-    private boolean has_remote_hub;
-    private boolean has_remote_sensor;
+    private Boolean has_remote_hub;
+    private Boolean has_remote_sensor;
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "garden_id"))
@@ -122,9 +122,9 @@ public class PlantEntity {
     @AttributeOverride(name = "reached_hub_at", column = @Column(name = "hub_reached_hub_at"))
     private HubEntity hub;
 
-    private boolean isSilent;
+    private Boolean isSilent;
     private int noOfbadge;
-    private boolean isBadge;
+    private Boolean isBadge;
     private int temperature_unit;
 
 }

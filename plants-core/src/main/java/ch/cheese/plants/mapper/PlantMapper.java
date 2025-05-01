@@ -63,7 +63,7 @@ public class PlantMapper {
         entity.setStatus(plant.getStatus());
         entity.setPlant_id(plant.getPlant_id());
         entity.setFamily_id(plant.getFamily_id());
-        entity.set_shared(plant.is_shared());
+        entity.setIs_shared(plant.getIs_shared());
         entity.setIndex(plant.getIndex());
         entity.setWifi_status(plant.getWifi_status());
         entity.setThumb_path(plant.getThumb_path());
@@ -73,18 +73,18 @@ public class PlantMapper {
         entity.setReceived_data_at(plant.getReceived_data_at());
         entity.setTemperature_optimal_hours(plant.getTemperature_optimal_hours());
         entity.setLight_optimal_hours(plant.getLight_optimal_hours());
-        entity.setEligibility(plant.isEligibility());
+        entity.setEligibility(plant.getEligibility());
         entity.setTemperature_status(plant.getTemperature_status());
         entity.setLight_status(plant.getLight_status());
         entity.setMoisture_status(plant.getMoisture_status());
         entity.setSalinity_status(plant.getSalinity_status());
         entity.setNutrients_status(plant.getNutrients_status());
         entity.setCare_tips_count(plant.getCare_tips_count());
-        entity.setHas_remote_hub(plant.isHas_remote_hub());
-        entity.setHas_remote_sensor(plant.isHas_remote_sensor());
-        entity.setSilent(plant.isSilent());
+        entity.setHas_remote_hub(plant.getHas_remote_hub());
+        entity.setHas_remote_sensor(plant.getHas_remote_sensor());
+        entity.setIsSilent(plant.getIsSilent());
         entity.setNoOfbadge(plant.getNoOfbadge());
-        entity.setBadge(plant.isBadge());
+        entity.setIsBadge(plant.getIsBadge());
 
         // Mapping der Embedded Objekte
         entity.setFertilisation(fertilisationMapper.toEntity(plant.getFertilisation()));
@@ -109,15 +109,15 @@ public class PlantMapper {
             entity.setOwner(modelMapper.map(detail.getOwner(), OwnerEntity.class));
         }
         entity.setSoil_type_id(detail.getSoil_type_id());
-        entity.setGathering_data(detail.isGathering_data());
-        entity.set_illegal(detail.is_illegal());
-        entity.setNot_supported(detail.isNot_supported());
-        entity.setSensor_update_available(detail.isSensor_update_available());
+        entity.setGathering_data(detail.getGathering_data());
+        entity.setIs_illegal(detail.getIs_illegal());
+        entity.setNot_supported(detail.getNot_supported());
+        entity.setSensor_update_available(detail.getSensor_update_available());
         if (entity.getLocation() == null) {
             entity.setLocation(detail.getLocation());
         }
-        entity.setVerification(detail.isVerification());
-        entity.set_productive_plant(detail.is_productive_plant());
+        entity.setVerification(detail.getVerification());
+        entity.setIs_productive_plant(detail.getIs_productive_plant());
         if (entity.getDismissed_sensor_message_at() == null) {
             entity.setDismissed_sensor_message_at(detail.getDismissed_sensor_message_at());
         }
