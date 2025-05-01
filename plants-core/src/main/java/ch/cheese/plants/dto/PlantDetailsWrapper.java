@@ -1,9 +1,9 @@
 package ch.cheese.plants.dto;
 
-import ch.cheese.plants.entity.PlantEntity;
+import ch.cheese.plants.dto.Plant;
 import lombok.Data;
 
 @Data
 public class PlantDetailsWrapper {
-    private PlantEntity plant;
+    private Plant plant;
 }

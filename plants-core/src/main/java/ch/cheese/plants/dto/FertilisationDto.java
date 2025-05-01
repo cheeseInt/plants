@@ -3,8 +3,7 @@ package ch.cheese.plants.dto;
 import lombok.Data;
 
 @Data
-public class Fertilisation {
+public class FertilisationDto {
     private String last_fertilised_at;
     private String fertilise_at;
-    private Boolean was_repotted;
-}
+    private boolean was_repotted;}

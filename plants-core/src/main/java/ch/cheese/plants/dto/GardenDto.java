@@ -3,7 +3,7 @@ package ch.cheese.plants.dto;
 import lombok.Data;
 
 @Data
-public class Garden {
-    private Integer id;
+public class GardenDto {
+    private int id;
     private String name;
 }

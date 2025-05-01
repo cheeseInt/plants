@@ -16,7 +16,7 @@ public class PlantMeasurementsResponse {
 
     private Thresholds thresholds;
 
-    private Fertilisation fertilisation;
+    private FertilisationDto fertilisation;
 
     private List<Thresholds> thresholds_list;
 }

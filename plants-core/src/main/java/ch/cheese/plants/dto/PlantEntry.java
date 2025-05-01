@@ -38,11 +38,11 @@ public class PlantEntry {
     private Integer salinity_status;
     private Integer nutrients_status;
 
-    private Fertilisation fertilisation;
-    private Notifications notifications;
-    private Garden garden;
-    private Sensor sensor;
-    private Hub hub;
-    private Measurements measurements;
-    private DeviceMenu device_menu;
+    private FertilisationDto fertilisation;
+    private NotificationDto notifications;
+    private GardenDto garden;
+    private SensorDto sensor;
+    private HubDto hub;
+    private MeasurementDto measurements;
+    private DeviceMenuDto device_menu;
 }

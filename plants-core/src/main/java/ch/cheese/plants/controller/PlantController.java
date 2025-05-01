@@ -6,12 +6,12 @@ import ch.cheese.plants.service.PlantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class PlantController {
@@ -25,12 +25,11 @@ public class PlantController {
     private static final String PLANTS_URL = "https://web.fyta.de/api/user-plant";
     private static final String MEASUREMENTS_URL_TEMPLATE = "https://web.fyta.de/api/user-plant/measurements/";
     private static final String DETAILS_URL_TEMPLATE = "https://web.fyta.de/api/user-plant/";
-    String accessToken = getAccessToken("cheese_int@me.com", "zurha2-hahrIt-dywzeb");
 
     public void importMyPlant(String timeline) {
         log.info("🌿 Starte Import mit timeline: {}", timeline);
 
-        String accessToken = getAccessToken("cheese_int@me.com", "zurha2-hahrIt-dywzeb");
+        String accessToken = plantService.getAccessToken();
         if (accessToken == null) {
             log.error("Authentication failed. No access token received.");
             return;
@@ -55,7 +54,7 @@ public class PlantController {
                     continue;
                 }
 
-                Plant measurement = getPlantMeasurements(String.valueOf(summary.getId()), timeline, accessToken);
+                PlantMeasurementsResponse measurement = getPlantMeasurements(String.valueOf(summary.getId()), timeline, accessToken);
                 if (measurement == null) {
                     log.warn("⚠️ Messungen nicht gefunden für Pflanze {}", summary.getId());
                     continue;
@@ -73,22 +72,6 @@ public class PlantController {
         log.info("🚀 Import abgeschlossen");
     }
 
-    private String getAccessToken(String email, String password) {
-        Map<String, String> body = Map.of("email", email, "password", password);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-
-        try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(LOGIN_URL, request, Map.class);
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                return (String) response.getBody().get("access_token");
-            }
-        } catch (Exception e) {
-            log.error("Login request failed", e);
-        }
-        return null;
-    }
 
     private List<PlantEntry> getPlantEntries(String token) {
         HttpHeaders headers = new HttpHeaders();

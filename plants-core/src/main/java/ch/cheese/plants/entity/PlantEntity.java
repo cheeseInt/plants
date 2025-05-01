@@ -2,80 +2,70 @@ package ch.cheese.plants.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "plants")
 @Data
+@NoArgsConstructor
 public class PlantEntity {
 
     @Id
-    private Integer id; // Plant-ID aus Fyta API
+    private Integer id;
 
     private String nickname;
     private String scientificName;
     private String commonName;
-
     private Integer status;
     private Integer plantId;
-    private Integer familyId;
-    private Integer wifiStatus;
 
+    private String receivedDataAt;
     private String thumbPath;
     private String originPath;
     private String plantThumbPath;
     private String plantOriginPath;
 
-    private String receivedDataAt;
-    private Integer temperatureOptimalHours;
-    private Integer lightOptimalHours;
-
-    private Boolean eligibility;
-    private Integer temperatureStatus;
     private Integer lightStatus;
     private Integer moistureStatus;
-    private Integer salinityStatus;
     private Integer nutrientsStatus;
+    private Integer salinityStatus;
+    private Integer temperatureStatus;
 
-    private Integer careTipsCount;
-    private Boolean hasRemoteHub;
-    private Boolean hasRemoteSensor;
-
-    private Boolean isSilent;
-    private Boolean isDoingGreat;
-
-    private Integer airtableId;
+    private Integer airTableId;
     private String genus;
+    private Boolean isShared;
+    private Integer familyId;
     private Integer potSize;
     private Integer drainage;
+    private Double lightFactor;
     private Integer soilTypeId;
-    private Integer lightFactor;
-    private Boolean gatheringData;
-    private Boolean isIllegal;
-    private Boolean notSupported;
-    private Boolean sensorUpdateAvailable;
-    private Boolean verification;
-    private Boolean isProductivePlant;
+
+    private boolean gatheringData;
+    private boolean isIllegal;
+    private boolean notSupported;
+    private boolean sensorUpdateAvailable;
+    private String location;
+    private boolean verification;
+    private boolean isProductivePlant;
     private String dismissedSensorMessageAt;
+    private Integer temperatureUnit;
 
+    @Embedded
+    private FertilisationEmbedded fertilisation;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private FertilisationEntity fertilisation;
+    @Embedded
+    private NotificationsEmbedded notifications;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private NotificationsEntity notifications;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "garden_id")
     private GardenEntity garden;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "sensor_id")
     private SensorEntity sensor;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "hub_id")
     private HubEntity hub;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private MeasurementsEntity measurements;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private DeviceMenuEntity deviceMenu;
 }
