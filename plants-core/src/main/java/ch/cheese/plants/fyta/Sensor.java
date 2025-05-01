@@ -1,13 +1,10 @@
-package ch.cheese.plants.entity;
+package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
-public class SensorEntity {
-
+public class Sensor {
     @JsonProperty("id")
     private String id;
 
@@ -25,4 +22,6 @@ public class SensorEntity {
 
     @JsonProperty("received_data_at")
     private String received_data_at;
+
+    // Getter und Setter können mit Lombok ersetzt werden
 }

@@ -1,16 +1,15 @@
-package ch.cheese.plants.entity;
+package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
-public class GardenEntity {
-
+public class Garden {
     @JsonProperty("id")
     private int id;
 
     @JsonProperty("index")
     private String index;
+
+    // Getter und Setter können mit Lombok ersetzt werden
 }

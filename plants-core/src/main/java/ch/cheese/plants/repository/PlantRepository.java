@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlantRepository extends JpaRepository<PlantEntity, Integer> {
-    // zusätzliche Abfragen bei Bedarf:
-    // Optional<PlantEntity> findByNickname(String nickname);
+public interface PlantRepository extends JpaRepository<PlantEntity, Long> {
+    // du kannst hier bei Bedarf eigene Methoden hinzufügen, z. B.:
+    // List<PlantEntity> findByNickname(String nickname);
 }

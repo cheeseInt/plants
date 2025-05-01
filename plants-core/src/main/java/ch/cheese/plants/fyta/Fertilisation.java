@@ -1,13 +1,10 @@
-package ch.cheese.plants.entity;
+package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
-public class FertilisationEntity {
-
+public class Fertilisation {
     @JsonProperty("last_fertilised_at")
     private String last_fertilised_at;
 
@@ -16,4 +13,6 @@ public class FertilisationEntity {
 
     @JsonProperty("was_repotted")
     private boolean was_repotted;
+
+    // Getter und Setter können mit Lombok ersetzt werden
 }

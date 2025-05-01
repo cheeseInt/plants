@@ -1,13 +1,10 @@
-package ch.cheese.plants.entity;
+package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
-public class NotificationsEntity {
-
+public class Notifications {
     @JsonProperty("light")
     private boolean light;
 
@@ -19,4 +16,6 @@ public class NotificationsEntity {
 
     @JsonProperty("nutrition")
     private boolean nutrition;
+
+    // Getter und Setter können mit Lombok ersetzt werden
 }

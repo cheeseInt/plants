@@ -1,13 +1,10 @@
-package ch.cheese.plants.entity;
+package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Embeddable;
 import lombok.Data;
 
-@Embeddable
 @Data
-public class HubEntity {
-
+public class Hub {
     @JsonProperty("id")
     private int id;
 
@@ -28,4 +25,6 @@ public class HubEntity {
 
     @JsonProperty("reached_hub_at")
     private String reached_hub_at;
+
+    // Getter und Setter können mit Lombok ersetzt werden
 }
