@@ -46,13 +46,9 @@ public class PlantMapper {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Fehler beim Serialisieren von peers", e);
         }
-        String timestamp = URLEncoder.encode(plant.getReceived_data_at(), StandardCharsets.UTF_8);
-        String proxyUrl = "http://localhost:8081/api/proxy/plant-thumb/" + plant.getId();
 
-        log.info("Timestamp: {}", timestamp);
-        log.info("Proxy URL: {}", proxyUrl);
+        entity.setProxy_thumb_url("http://localhost:8081/proxy/thumb/" +plant.getId());
 
-        entity.setThumb_proxy_url(proxyUrl);
 
         entity.setScientific_name(plant.getScientific_name());
         entity.setCommon_name(plant.getCommon_name());

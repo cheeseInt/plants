@@ -2,31 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Pflanzenliste</title>
+    <meta charset="UTF-8">
 </head>
 <body>
 <h1>Gespeicherte Pflanzen</h1>
-<table border="1">
+
+<table border="1" cellpadding="10">
+    <thead>
     <tr>
         <th>ID</th>
         <th>Nickname</th>
-        <th>Artname</th>
+        <th>Wissenschaftlicher Name</th>
         <th>Empfangen am</th>
-        <th>Bild</th>
+        <th>Pflanzenbild</th>
+        <th>Sensorbild (per Proxy)</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="plant : ${plants}">
-
-
-
         <td th:text="${plant.id}">ID</td>
         <td th:text="${plant.nickname}">Nickname</td>
         <td th:text="${plant.scientific_name}">Scientific Name</td>
-        <td th:text="${plant.received_data_at}">Received</td>
+        <td th:text="${plant.received_data_at}">Received At</td>
+
+        <!-- Direktes Bild (öffentlich) -->
         <td>
-            <img th:src="${plant.plant_thumb_path}" alt="Bild 1" width="100"/>
+            <img th:src="${plant.plant_thumb_path}" alt="Pflanzenbild" width="100"/>
         </td>
+
+        <!-- Bild über Proxy, weil Zugriff per Token -->
         <td>
-            <img th:src="${plant.thumb_proxy_url}" alt="Bild 2" width="100"/>
-        </td>    </tr>
+            <img th:src="@{'http://localhost:8081/proxy/thumb?id=' + ${plant.id}}" alt="Proxybild" width="100"/>
+        </td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>

@@ -39,7 +39,7 @@ public class PlantEntity {
     private int moisture_status;
     private int salinity_status;
     private int nutrients_status;
-    private String thumb_proxy_url;
+    private String proxy_thumb_url;
 
     @Embedded
     @AttributeOverride(name = "last_fertilised_at", column = @Column(name = "fertilisation_last_fertilised_at"))

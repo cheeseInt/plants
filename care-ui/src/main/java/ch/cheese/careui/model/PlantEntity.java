@@ -11,5 +11,5 @@ public class PlantEntity {
     private String received_data_at;
     private String plant_thumb_path;
     private String thumb_path;
-    private String thumb_proxy_url; // für den Zugriff mit Token über Proxy}
+    private String proxy_thumb_url; // ← wird für Bildanzeige über plants-core verwendet
 }

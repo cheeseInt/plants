@@ -37,6 +37,8 @@ public class Plant {
     private String origin_path;
     @JsonProperty("plant_thumb_path")
     private String plant_thumb_path;
+    @JsonProperty("plant_proxy_path")
+    private String plant_proxy_path;
     @JsonProperty("plant_origin_path")
     private String plant_origin_path;
     @JsonProperty("received_data_at")
