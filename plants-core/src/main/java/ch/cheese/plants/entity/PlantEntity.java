@@ -20,10 +20,6 @@ public class PlantEntity {
     private String family_id;
     private boolean is_shared;
 
-    @Lob
-    @Column(name = "peers_json", columnDefinition = "TEXT")
-    private String peersJson;
-
     private String index;
     private int wifi_status;
     private String thumb_path;
@@ -40,6 +36,50 @@ public class PlantEntity {
     private int salinity_status;
     private int nutrients_status;
     private String proxy_thumb_url;
+    private int airtable_id;
+    private String genus;
+    private int pot_size;
+    private int drainage;
+    private double light_factor;
+    private int soil_type_id;
+    private boolean gathering_data;
+    private boolean is_illegal;
+    private boolean not_supported;
+    private boolean sensor_update_available;
+    private String location;
+    private boolean verification;
+    private boolean is_productive_plant;
+    private String dismissed_sensor_message_at;
+
+    @Lob
+    @Column(name = "peers_json", columnDefinition = "TEXT")
+    private String peersJson;
+
+
+    @ElementCollection
+    private List<String> missing;
+    @ElementCollection
+    private List<String> know_hows;
+
+    @Embedded
+    private OwnerEntity owner;
+
+    @Embedded
+    @AttributeOverride(name = "ph", column = @Column(name = "measurements_ph"))
+    @AttributeOverride(name = "nutrients", column = @Column(name = "measurements_nutrients"))
+    @AttributeOverride(name = "temperature", column = @Column(name = "measurements_temperature"))
+    @AttributeOverride(name = "light", column = @Column(name = "measurements_light"))
+    @AttributeOverride(name = "moisture", column = @Column(name = "measurements_moisture"))
+    @AttributeOverride(name = "salinity", column = @Column(name = "measurements_salinity"))
+    @AttributeOverride(name = "battery", column = @Column(name = "measurements_battery"))
+    private MeasurementsEntity measurements;
+
+    @Embedded
+    @AttributeOverride(name = "actions", column = @Column(name = "device_menu_actions"))
+    @AttributeOverride(name = "buttons", column = @Column(name = "device_menu_buttons"))
+    @AttributeOverride(name = "live_mode_enabled", column = @Column(name = "device_menu_live_mode_enabled"))
+    @AttributeOverride(name = "diagnose_enabled", column = @Column(name = "device_menu_diagnose_enabled"))
+    private Device_menuEntity device_menu;
 
     @Embedded
     @AttributeOverride(name = "last_fertilised_at", column = @Column(name = "fertilisation_last_fertilised_at"))
@@ -85,4 +125,6 @@ public class PlantEntity {
     private boolean isSilent;
     private int noOfbadge;
     private boolean isBadge;
+    private int temperature_unit;
+
 }

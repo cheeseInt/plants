@@ -1,10 +1,12 @@
 package ch.cheese.plants.mapper;
 
 import ch.cheese.plants.entity.*;
+import ch.cheese.plants.fyta.FytaPlantDetailResponse;
 import ch.cheese.plants.fyta.Plant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -20,13 +22,18 @@ public class PlantMapper {
     private final SensorEntityMapper sensorMapper;
     private final HubEntityMapper hubMapper;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
+
 
     public PlantMapper(
             FertilisationEntityMapper fertilisationMapper,
             NotificationsEntityMapper notificationsMapper,
             GardenEntityMapper gardenMapper,
             SensorEntityMapper sensorMapper,
-            HubEntityMapper hubMapper, ObjectMapper objectMapper
+            HubEntityMapper hubMapper,
+            ObjectMapper objectMapper,
+            ModelMapper modelMapper
+
     ) {
         this.fertilisationMapper = fertilisationMapper;
         this.notificationsMapper = notificationsMapper;
@@ -34,6 +41,7 @@ public class PlantMapper {
         this.sensorMapper = sensorMapper;
         this.hubMapper = hubMapper;
         this.objectMapper = objectMapper;
+        this.modelMapper = modelMapper;
     }
 
     public PlantEntity toEntity(Plant plant) {
@@ -86,4 +94,46 @@ public class PlantMapper {
         entity.setHub(hubMapper.toEntity(plant.getHub()));
 
         return entity;
-    }}
+    }
+
+    public void updateEntityWithDetails(PlantEntity entity, FytaPlantDetailResponse detail) {
+
+        entity.setAirtable_id(detail.getAirtable_id());
+        if (entity.getGenus() == null) {
+            entity.setGenus(detail.getGenus());
+        }
+        entity.setPot_size(detail.getPot_size());
+        entity.setDrainage(detail.getDrainage());
+        entity.setLight_factor(detail.getLight_factor());
+        if (entity.getOwner() == null) {
+            entity.setOwner(modelMapper.map(detail.getOwner(), OwnerEntity.class));
+        }
+        entity.setSoil_type_id(detail.getSoil_type_id());
+        entity.setGathering_data(detail.isGathering_data());
+        entity.set_illegal(detail.is_illegal());
+        entity.setNot_supported(detail.isNot_supported());
+        entity.setSensor_update_available(detail.isSensor_update_available());
+        if (entity.getLocation() == null) {
+            entity.setLocation(detail.getLocation());
+        }
+        entity.setVerification(detail.isVerification());
+        entity.set_productive_plant(detail.is_productive_plant());
+        if (entity.getDismissed_sensor_message_at() == null) {
+            entity.setDismissed_sensor_message_at(detail.getDismissed_sensor_message_at());
+        }
+        if (entity.getMissing() == null || entity.getMissing().isEmpty()) {
+            entity.setMissing(detail.getMissing());
+        }
+        if (entity.getMeasurements() == null) {
+            entity.setMeasurements(modelMapper.map(detail.getMeasurements(), MeasurementsEntity.class));
+        }
+        entity.setTemperature_unit(detail.getTemperature_unit());
+        if (entity.getKnow_hows() == null || entity.getKnow_hows().isEmpty()) {
+            entity.setKnow_hows(detail.getKnow_hows());
+        }
+        if (entity.getDevice_menu() == null) {
+            entity.setDevice_menu(modelMapper.map(detail.getDevice_menu(), Device_menuEntity.class));
+        }
+    }
+
+}

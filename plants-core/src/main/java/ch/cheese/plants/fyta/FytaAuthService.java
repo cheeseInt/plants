@@ -27,6 +27,21 @@ public class FytaAuthService {
                 .block(); // block() nur für synchronen Aufruf
     }
 
+    public FytaPlantDetailResponse fetchUserPlantsDetail(String id) {
+        getAccessToken();
+        if (accessToken == null) {
+            throw new IllegalStateException("No access token available");
+        }
+
+        return webClient.get()
+                .uri("/api/user-plant/" + id)
+                .headers(h -> h.setBearerAuth(accessToken))
+                .retrieve()
+                .bodyToMono(FytaPlantDetailResponse.class)
+                .block();
+
+    }
+
     public String loginAndGetAccessToken(String email, String password) {
         LoginRequest request = new LoginRequest(email, password);
 

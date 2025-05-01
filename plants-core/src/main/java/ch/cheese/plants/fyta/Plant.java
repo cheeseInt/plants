@@ -26,7 +26,7 @@ public class Plant {
     @JsonProperty("owner")
     private Owner owner;
     @JsonProperty("peers")
-    private List<Object> peers;
+    private List<String> peers;
     @JsonProperty("index")
     private String index;
     @JsonProperty("wifi_status")
