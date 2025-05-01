@@ -4,8 +4,13 @@ import ch.cheese.plants.entity.*;
 import ch.cheese.plants.fyta.Plant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+@Slf4j
 @Component
 public class PlantMapper {
 
@@ -41,6 +46,13 @@ public class PlantMapper {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Fehler beim Serialisieren von peers", e);
         }
+        String timestamp = URLEncoder.encode(plant.getReceived_data_at(), StandardCharsets.UTF_8);
+        String proxyUrl = "http://localhost:8081/api/proxy/plant-thumb/" + plant.getId();
+
+        log.info("Timestamp: {}", timestamp);
+        log.info("Proxy URL: {}", proxyUrl);
+
+        entity.setThumb_proxy_url(proxyUrl);
 
         entity.setScientific_name(plant.getScientific_name());
         entity.setCommon_name(plant.getCommon_name());

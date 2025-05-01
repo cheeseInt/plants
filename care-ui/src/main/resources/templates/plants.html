@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pflanzenliste</title>
+</head>
+<body>
+<h1>Gespeicherte Pflanzen</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nickname</th>
+        <th>Artname</th>
+        <th>Empfangen am</th>
+        <th>Bild</th>
+    </tr>
+    <tr th:each="plant : ${plants}">
+
+
+
+        <td th:text="${plant.id}">ID</td>
+        <td th:text="${plant.nickname}">Nickname</td>
+        <td th:text="${plant.scientific_name}">Scientific Name</td>
+        <td th:text="${plant.received_data_at}">Received</td>
+        <td>
+            <img th:src="${plant.plant_thumb_path}" alt="Bild 1" width="100"/>
+        </td>
+        <td>
+            <img th:src="${plant.thumb_proxy_url}" alt="Bild 2" width="100"/>
+        </td>    </tr>
+</table>
+</body>
+</html>

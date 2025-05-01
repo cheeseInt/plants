@@ -24,6 +24,10 @@ public class PlantImportService {
         this.plantRepository = plantRepository;
     }
 
+    public List<PlantEntity> getAllPlants() {
+        return plantRepository.findAll();
+    }
+
     public int importPlantsFromFyta() {
         FytaUserPlantsResponse response = fytaAuthService.fetchUserPlants();
         List<Plant> plants = response.getPlants();
