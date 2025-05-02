@@ -10,7 +10,6 @@
     </parent>
 
     <artifactId>plants-config</artifactId>
-    <name>plants-config</name>
 
     <dependencies>
         <dependency>

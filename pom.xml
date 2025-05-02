@@ -8,13 +8,10 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>Plants Parent</name>
-    <description>Parent module for plants-core and care-ui</description>
-
     <modules>
-        <module>plants-config</module>
         <module>plants-core</module>
         <module>care-ui</module>
+        <module>plants-config</module>
     </modules>
 
     <properties>
@@ -31,11 +28,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.modelmapper</groupId>
-                <artifactId>modelmapper</artifactId>
-                <version>3.1.1</version> <!-- ✅ Version manuell setzen -->
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -44,7 +36,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version> <!-- ✅ hinzufügen -->
+                <version>${spring.boot.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
