@@ -9,9 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="care-ui" />
         <module name="plants-core" />
-        <module name="plants-config" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="plants-config" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
