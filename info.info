@@ -1,16 +1,16 @@
 🧪 So verwendest du es
 
 # Basis-Setup (lädt automatisch override.yml falls vorhanden)
-docker-compose up -d
+docker compose up -d
 
 # explizit nur bestimmte Datei
-docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+docker compose -f docker-compose.yml -f docker-compose.override.yml up
 
 # Logs
-docker-compose logs -f postgres
+docker compose logs -f postgres
 
 # herunterfahren
-docker-compose down
+docker compose down
 
 
 
@@ -32,7 +32,7 @@ docker build -t core-ui ./care-ui
 
 🧪 Test per Compose:
 
-docker-compose up --build
+docker compose up --build
 
 
 
@@ -44,13 +44,14 @@ docker-compose up -d postgres
 
 🔹 Alles in Containern (prod):
 mvn clean package -DskipTests
-docker-compose up --build
+docker compose up --build
 
 
 
-🧪 Verwendung:
-make               # baut Maven-Module, startet Docker Compose
-make up            # nur Compose starten
-make down          # Container stoppen
+make               # build + up
+make build         # nur Maven-Build
+make up            # Docker-Compose starten (inkl. .secret Prüfung)
+make down          # Compose stoppen
 make logs          # Logs anzeigen
-make rebuild       # alles neu bauen + starten
+make clean         # Maven-Targets löschen
+make rebuild       # clean + build + up

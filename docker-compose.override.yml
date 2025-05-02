@@ -1,11 +1,12 @@
 version: '3.9'
+
 services:
   plants-core:
-    command: ["echo", "plants-core läuft lokal in IntelliJ"]
+    command: ["echo", "🌱 plants-core wird lokal in IntelliJ gestartet"]
     deploy:
       replicas: 0
 
   core-ui:
-    command: ["echo", "care-ui läuft lokal in IntelliJ"]
+    command: ["echo", "🖥️ care-ui wird lokal in IntelliJ gestartet"]
     deploy:
       replicas: 0

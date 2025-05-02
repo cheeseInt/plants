@@ -36,3 +36,6 @@ docker-compose.override.yml # falls du lokale Overrides nicht ins Repo willst
 # Shell- oder Make-Dateien Cache
 *.swp
 *.swo
+
+.secret
+
