@@ -9,12 +9,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="care-ui" />
         <module name="plants-core" />
+        <module name="plants-config" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="care-ui" options="-parameters" />
+      <module name="care-ui" options="" />
       <module name="plants-core" options="" />
     </option>
   </component>

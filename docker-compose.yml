@@ -27,7 +27,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-  core-ui:
+  care-ui:
     build:
       context: ./care-ui
       dockerfile: Dockerfile

@@ -2,8 +2,8 @@
 # Konfigurierbare Variablen
 # -------------------------
 MODULES = plants-core care-ui
-PROFILE ?= prod
-JAR_CMD = mvn clean package -DskipTests
+PROFILE ?= dev
+JAR_CMD = mvn clean package spring-boot:repackage -DskipTests
 
 # -------------------------
 # Targets
@@ -39,15 +39,24 @@ check-secrets:
 		exit 1; \
 	fi
 
-
 # -------------------------
-# Shortcut-Profil-Targets
+# Profile-basierte Shortcuts
 # -------------------------
 
 dev:
-	@echo "🔧 Starting DEV mode (only PostgreSQL in Docker)..."
-	$(MAKE) PROFILE=dev up
+	@echo "🔧 Starting DEV mode (only DB in Docker)..."
+	docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.override.yml \
+		--env-file .env \
+		--env-file .secret \
+		up -d
 
 prod:
 	@echo "🚀 Starting PROD mode (everything in Docker)..."
-	$(MAKE) PROFILE=prod build up
+	$(MAKE) PROFILE=prod build
+	docker compose \
+		-f docker-compose.yml \
+		--env-file .env \
+		--env-file .secret \
+		up -d

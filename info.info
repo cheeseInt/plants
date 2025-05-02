@@ -27,7 +27,7 @@ mvn clean package -DskipTests
 🛠 Docker-Image bauen (optional direkt):
 
 docker build -t plants-core ./plants-core
-docker build -t core-ui ./care-ui
+docker build -t care-ui ./care-ui
 
 
 🧪 Test per Compose:
@@ -46,9 +46,10 @@ docker-compose up -d postgres
 mvn clean package -DskipTests
 docker compose up --build
 
+make dev      # nur PostgreSQL läuft in Docker (Override aktiv)
+make prod     # alle Container laufen (kein Override geladen)
+make rebuild  # komplett neu bauen + starten
 
-
-make               # build + up
 make build         # nur Maven-Build
 make up            # Docker-Compose starten (inkl. .secret Prüfung)
 make down          # Compose stoppen

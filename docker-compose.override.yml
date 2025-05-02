@@ -6,7 +6,7 @@ services:
     deploy:
       replicas: 0
 
-  core-ui:
+  care-ui:
     command: ["echo", "🖥️ care-ui wird lokal in IntelliJ gestartet"]
     deploy:
       replicas: 0
