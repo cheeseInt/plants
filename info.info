@@ -1,0 +1,56 @@
+🧪 So verwendest du es
+
+# Basis-Setup (lädt automatisch override.yml falls vorhanden)
+docker-compose up -d
+
+# explizit nur bestimmte Datei
+docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+
+# Logs
+docker-compose logs -f postgres
+
+# herunterfahren
+docker-compose down
+
+
+
+📦 JARs bauen
+
+Vor dem Build der Docker-Images musst du die JARs bauen:
+
+cd plants-core
+mvn clean package -DskipTests
+
+cd ../care-ui
+mvn clean package -DskipTests
+
+🛠 Docker-Image bauen (optional direkt):
+
+docker build -t plants-core ./plants-core
+docker build -t core-ui ./care-ui
+
+
+🧪 Test per Compose:
+
+docker-compose up --build
+
+
+
+🏁 Anwendung starten
+
+🔹 Nur PostgreSQL für IntelliJ:
+docker-compose up -d postgres
+→ IntelliJ verwendet Profile dev mit DB auf localhost.
+
+🔹 Alles in Containern (prod):
+mvn clean package -DskipTests
+docker-compose up --build
+
+
+
+🧪 Verwendung:
+make               # baut Maven-Module, startet Docker Compose
+make up            # nur Compose starten
+make down          # Container stoppen
+make logs          # Logs anzeigen
+make rebuild       # alles neu bauen + starten

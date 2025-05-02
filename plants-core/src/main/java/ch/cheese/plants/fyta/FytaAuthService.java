@@ -1,5 +1,6 @@
 package ch.cheese.plants.fyta;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -51,27 +52,12 @@ public class FytaAuthService {
 
     }
 
-    public List<FytaMeasurementResponse> fetchMeasurements(String id, String timeline) {
+    public FytaMeasurementWrapper fetchMeasurements(String id, String timeline)  {
         getAccessToken();
         if (accessToken == null) {
             throw new IllegalStateException("No access token available");
         }
         log.info("Fetching measurements for plant {} with timeline {}", id, timeline);
-
-        webClient.post()
-                .uri("https://web.fyta.de/api/user-plant/measurements/" + id)
-                .headers(h -> h.setBearerAuth(accessToken))
-                .bodyValue(Map.of("search", Map.of("timeline", "week")))
-                .exchangeToMono(response -> {
-                    // Statuscode loggen
-                    log.info("Status: " + response.statusCode());
-
-                    // Body als String loggen
-                    return response.bodyToMono(String.class)
-                            .doOnNext(body -> log.info("Body:\n" + body));
-                })
-                .block();
-
 
         return webClient.post()
                 .uri("/api/user-plant/measurements/" + id)
@@ -81,10 +67,8 @@ public class FytaAuthService {
                 })
                 .bodyValue("{\"search\": {\"timeline\": \"" + timeline + "\"}}")
                 .retrieve()
-                .bodyToFlux(FytaMeasurementResponse.class)
-                .collectList()
+                .bodyToMono(FytaMeasurementWrapper.class)
                 .block();
-
     }
 
     public String loginAndGetAccessToken(String email, String password) {

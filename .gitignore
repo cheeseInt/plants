@@ -1,0 +1,38 @@
+# Maven build output
+target/
+*/target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code (optional, falls verwendet)
+.vscode/
+
+# OS-Generiert
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Environment-Dateien
+.env
+.env.*
+
+# Datenbank-Volume von Docker
+pgdata/
+*.db
+
+# Docker
+docker-compose.override.yml # falls du lokale Overrides nicht ins Repo willst
+
+# JARs (falls du versehentlich built files reinpackst)
+*.jar
+
+# Shell- oder Make-Dateien Cache
+*.swp
+*.swo

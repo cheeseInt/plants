@@ -1,18 +1,35 @@
-version: '3.8'
-
+version: '3.9'
 services:
   postgres:
     image: postgres:16
-    container_name: plants-postgres
+    container_name: myplants-postgres
     restart: always
-    environment:
-      POSTGRES_DB: plantsdb
-      POSTGRES_USER: plantsuser
-      POSTGRES_PASSWORD: plantspw
+    env_file:
+      - .env
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+  plants-core:
+    build:
+      context: ./plants-core
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+
+  core-ui:
+    build:
+      context: ./care-ui
+    depends_on:
+      - plants-core
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
 
 volumes:
-  postgres_data:
+  pgdata:

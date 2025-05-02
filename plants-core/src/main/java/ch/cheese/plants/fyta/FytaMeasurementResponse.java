@@ -1,6 +1,7 @@
 package ch.cheese.plants.fyta;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,5 +16,6 @@ public class FytaMeasurementResponse {
     private int soil_fertility;
     private boolean soil_fertility_anomaly;
     private int thresholds_id;
+    @JsonProperty("date_utc")
     private String date_utc;
 }

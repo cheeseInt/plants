@@ -42,13 +42,13 @@ public class PlantImportService {
         return plantRepository.findAll();
     }
     public void importMeasurements() {
+
         // measurement
         for (Plant plant : plantList) {
-
             log.info("Fetching measurements for plant {}", plant.getId());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            List<FytaMeasurementResponse> measurements = fytaAuthService.fetchMeasurements(String.valueOf(plant.getId()), "week");
+            FytaMeasurementWrapper wrapper = fytaAuthService.fetchMeasurements(String.valueOf(plant.getId()), "month");
+            List<FytaMeasurementResponse> measurements = wrapper.getMeasurements();
             if (measurements == null) {
                 log.warn("No measurements for plant {}", plant.getId());
             } else if (measurements.isEmpty()) {
