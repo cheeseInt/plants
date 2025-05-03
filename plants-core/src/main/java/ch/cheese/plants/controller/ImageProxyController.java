@@ -32,7 +32,7 @@ public class ImageProxyController {
 
     @GetMapping("/thumb")
     public ResponseEntity<byte[]> getImageFromFyta(@RequestParam(name = "id") String id) {
-        String token = fytaAuthService.getAccessToken();
+        String token = fytaAuthService.getAccessToken(false);
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

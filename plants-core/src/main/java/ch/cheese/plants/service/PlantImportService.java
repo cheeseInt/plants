@@ -1,5 +1,6 @@
 package ch.cheese.plants.service;
 
+import ch.cheese.plants.config.Timeline;
 import ch.cheese.plants.entity.MeasurementEntity;
 import ch.cheese.plants.entity.PlantEntity;
 import ch.cheese.plants.fyta.*;
@@ -35,19 +36,16 @@ public class PlantImportService {
     }
 
     private List<Plant> plantList;
-    private List<PlantEntity> plantEntityList;
-    private List<MeasurementEntity> measurementEntityList;
 
     public List<PlantEntity> getAllPlants() {
         return plantRepository.findAll();
     }
-    public void importMeasurements() {
-
+    public void importMeasurements(Timeline timeline) {
         // measurement
         for (Plant plant : plantList) {
             log.info("Fetching measurements for plant {}", plant.getId());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            FytaMeasurementWrapper wrapper = fytaAuthService.fetchMeasurements(String.valueOf(plant.getId()), "month");
+            FytaMeasurementWrapper wrapper = fytaAuthService.fetchMeasurements(String.valueOf(plant.getId()), timeline.toString());
             List<FytaMeasurementResponse> measurements = wrapper.getMeasurements();
             if (measurements == null) {
                 log.warn("No measurements for plant {}", plant.getId());
@@ -99,7 +97,7 @@ public class PlantImportService {
         plantList = response.getPlants();
         log.info("Fetched {} plants from Fyta", plantList.size());
 
-        plantEntityList = plantList.stream()
+        List<PlantEntity> plantEntityList = plantList.stream()
                 .map(plantMapper::toEntity)
                 .collect(Collectors.toList());
         log.info("Mapped {} plants to entities", plantEntityList.size());
@@ -108,11 +106,9 @@ public class PlantImportService {
 
     }
 
-
-    public int importPlantsFromFyta() {
+    public void importPlantsFromFyta(Timeline timeline) {
         importPlants();
         importPlantDetails();
-        importMeasurements();
-        return plantEntityList.size();
+        importMeasurements(timeline);
     }
 }
