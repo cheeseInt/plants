@@ -2,12 +2,10 @@ package ch.cheese.plants.controller;
 
 import ch.cheese.plants.config.Timeline;
 import ch.cheese.plants.entity.PlantEntity;
-import ch.cheese.plants.fyta.FytaAuthService;
 import ch.cheese.plants.service.PlantImportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.List;

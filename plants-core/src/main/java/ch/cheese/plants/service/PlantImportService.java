@@ -20,15 +20,15 @@ import java.util.stream.Collectors;
 @Service
 public class PlantImportService {
 
-    private final FytaAuthService fytaAuthService;
+    private final FytaService fytaService;
     private final PlantMapper plantMapper;
     private final MeasurementMapper measurementMapper;
     private final PlantRepository plantRepository;
     private final MeasurementRepository measurementRepository;
 
 
-    public PlantImportService(FytaAuthService fytaAuthService, PlantMapper plantMapper, MeasurementMapper measurementMapper, PlantRepository plantRepository, MeasurementRepository measurementRepository) {
-        this.fytaAuthService = fytaAuthService;
+    public PlantImportService(FytaService fytaService, PlantMapper plantMapper, MeasurementMapper measurementMapper, PlantRepository plantRepository, MeasurementRepository measurementRepository) {
+        this.fytaService = fytaService;
         this.plantMapper = plantMapper;
         this.measurementMapper = measurementMapper;
         this.plantRepository = plantRepository;
@@ -45,7 +45,7 @@ public class PlantImportService {
         for (Plant plant : plantList) {
             log.info("Fetching measurements for plant {}", plant.getId());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            FytaMeasurementWrapper wrapper = fytaAuthService.fetchMeasurements(String.valueOf(plant.getId()), timeline.toString());
+            FytaMeasurementWrapper wrapper = fytaService.fetchMeasurements(String.valueOf(plant.getId()), timeline.toString());
             List<FytaMeasurementResponse> measurements = wrapper.getMeasurements();
             if (measurements == null) {
                 log.warn("No measurements for plant {}", plant.getId());
@@ -78,7 +78,7 @@ public class PlantImportService {
             if (!plantRepository.existsById((long) plant.getId())) {
                 PlantEntity entity = plantMapper.toEntity(plant);
                 // Hole Detaildaten
-                FytaPlantDetailResponse detail = fytaAuthService.fetchUserPlantsDetail(String.valueOf(plant.getId()));
+                FytaPlantDetailResponse detail = fytaService.fetchUserPlantsDetail(String.valueOf(plant.getId()));
                 // erweitere Entity mit Detaildaten (nur leere Felder)
                 plantMapper.updateEntityWithDetails(entity, detail);
                 // speichere in die db
@@ -93,7 +93,7 @@ public class PlantImportService {
 
     public void importPlants() {
         // plants
-        FytaUserPlantsResponse response = fytaAuthService.fetchUserPlants();
+        FytaUserPlantsResponse response = fytaService.fetchUserPlants();
         plantList = response.getPlants();
         log.info("Fetched {} plants from Fyta", plantList.size());
 

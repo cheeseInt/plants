@@ -1,6 +1,7 @@
 package ch.cheese.plants.fyta;
 
 
+import ch.cheese.plants.config.FytaProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -13,15 +14,17 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @Service
-public class FytaAuthService {
+public class FytaService {
 
     private final WebClient webClient;
+    private final FytaProperties fytaProperties;
     private String accessToken; // lokal gespeicherter Token
     private LocalDateTime expiresAt; // lokal gespeicherter Ablauf Datum des Tokens
     private Integer loginCount = 0;
 
-    public FytaAuthService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://web.fyta.de").build();
+    public FytaService(WebClient.Builder webClientBuilder, FytaProperties fytaProperties, FytaProperties fytaProperties1) {
+        this.fytaProperties = fytaProperties1;
+        this.webClient = webClientBuilder.baseUrl(fytaProperties.getApiBaseUrl()).build();
     }
 
     public FytaUserPlantsResponse fetchUserPlants() {
@@ -160,7 +163,7 @@ public class FytaAuthService {
     }
 
     public String getAccessToken(boolean force) {
-        accessToken = loginAndGetAccessToken("cheese_int@me.com","zurha2-hahrIt-dywzeb", force);
+        accessToken = loginAndGetAccessToken(fytaProperties.getAuth().getEmail(),fytaProperties.getAuth().getPassword(), force);
         if (accessToken == null) {
             throw new IllegalStateException("No access token available");
         }

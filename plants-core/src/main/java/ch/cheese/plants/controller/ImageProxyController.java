@@ -1,7 +1,7 @@
 package ch.cheese.plants.controller;
 
 import ch.cheese.plants.entity.PlantEntity;
-import ch.cheese.plants.fyta.FytaAuthService;
+import ch.cheese.plants.fyta.FytaService;
 import ch.cheese.plants.repository.PlantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,21 +18,21 @@ import java.util.Optional;
 public class ImageProxyController {
 
     private final PlantRepository plantRepository;
-    private final FytaAuthService fytaAuthService;
+    private final FytaService fytaService;
     private final WebClient webClient;
 
     public ImageProxyController(
             PlantRepository plantRepository,
-            FytaAuthService fytaAuthService,
+            FytaService fytaService,
             WebClient.Builder webClientBuilder) {
         this.plantRepository = plantRepository;
-        this.fytaAuthService = fytaAuthService;
+        this.fytaService = fytaService;
         this.webClient = webClientBuilder.build();
     }
 
     @GetMapping("/thumb")
     public ResponseEntity<byte[]> getImageFromFyta(@RequestParam(name = "id") String id) {
-        String token = fytaAuthService.getAccessToken(false);
+        String token = fytaService.getAccessToken(false);
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
