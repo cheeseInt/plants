@@ -21,7 +21,6 @@ logs/
 
 # Environment-Dateien
 .env
-.env.*
 
 # Datenbank-Volume von Docker
 pgdata/
