@@ -1,19 +1,25 @@
 package ch.cheese.plants.controller;
 
 import ch.cheese.plants.config.Timeline;
+import ch.cheese.plants.dto.CareEntryDto;
+import ch.cheese.plants.dto.CareEntryRequest;
 import ch.cheese.plants.dto.PlantSummaryDto;
+import ch.cheese.plants.entity.CareEntryEntity;
 import ch.cheese.plants.entity.PlantEntity;
+import ch.cheese.plants.repository.CareEntryRepository;
 import ch.cheese.plants.repository.PlantRepository;
 import ch.cheese.plants.service.PlantImportService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ch.cheese.plants.dto.CareEntryQueryRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,12 +30,14 @@ public class PlantController {
     private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final PlantRepository plantRepository;
     private final PlantImportService plantImportService;
+    private final CareEntryRepository careEntryRepository;
 
     public PlantController(
-            PlantImportService plantImportService, PlantRepository plantRepository
+            PlantImportService plantImportService, PlantRepository plantRepository, CareEntryRepository careEntryRepository
     ) {
         this.plantImportService = plantImportService;
         this.plantRepository = plantRepository;
+        this.careEntryRepository = careEntryRepository;
     }
 
     @GetMapping("/summary")
@@ -60,6 +68,105 @@ public class PlantController {
         plantImportService.importPlantsFromFyta(timeline);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/care/care-entries/query")
+    public ResponseEntity<List<CareEntryDto>> queryCareEntries(@RequestBody CareEntryQueryRequest request) {
+        List<CareEntryEntity> entries;
+
+        if (request.getPlantId() != null && request.getFromDate() != null) {
+            entries = careEntryRepository.findByPlant_IdAndDateUtcAfter(request.getPlantId(), request.getFromDate());
+        } else if (request.getPlantId() != null) {
+            entries = careEntryRepository.findByPlant_Id(request.getPlantId());
+        } else if (request.getFromDate() != null) {
+            entries = careEntryRepository.findByDateUtcAfter(request.getFromDate());
+        } else {
+            entries = careEntryRepository.findAll();
+        }
+
+        List<CareEntryDto> dtoList = entries.stream().map(entry -> {
+            CareEntryDto dto = new CareEntryDto();
+            dto.setId(entry.getId());
+            dto.setPlantId(entry.getPlant().getId());
+            dto.setDateUtc(entry.getDateUtc());
+            dto.setWaterInLiter(entry.getWaterInLiter());
+            dto.setFertilizerInMl(entry.getFertilizerInMl());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+    @DeleteMapping("/care/care-entry/{id}")
+    public ResponseEntity<String> deleteCareEntry(@PathVariable Long id) {
+        if (!careEntryRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        careEntryRepository.deleteById(id);
+        return ResponseEntity.ok("deleted");
+    }
+
+    @PutMapping("/care/care-entry")
+    public ResponseEntity<String> putCareEntry(@RequestBody CareEntryRequest request) {
+        try {
+            Optional<PlantEntity> plantOpt = plantRepository.findById(request.getPlantId());
+            if (plantOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("Plant not found");
+            }
+
+            PlantEntity plant = plantOpt.get();
+            Optional<CareEntryEntity> optionalEntry = careEntryRepository
+                    .findByPlant_IdAndDateUtc(request.getPlantId(), request.getDateUtc());
+
+            if (optionalEntry.isPresent()) {
+                CareEntryEntity existing = optionalEntry.get();
+
+                boolean changed = false;
+
+                if (request.getWaterInLiter() != null && !request.getWaterInLiter().equals(existing.getWaterInLiter())) {
+                    existing.setWaterInLiter(request.getWaterInLiter());
+                    changed = true;
+                }
+
+                if (request.getFertilizerInMl() != null && !request.getFertilizerInMl().equals(existing.getFertilizerInMl())) {
+                    existing.setFertilizerInMl(request.getFertilizerInMl());
+                    changed = true;
+                }
+
+                if (changed) {
+                    careEntryRepository.save(existing);
+                    return ResponseEntity.noContent().build(); // 204
+                } else {
+                    return ResponseEntity.ok("No changes"); // 200
+                }
+
+            } else {
+                CareEntryEntity newEntry = new CareEntryEntity();
+                newEntry.setPlant(plant);
+                newEntry.setDateUtc(request.getDateUtc());
+                newEntry.setWaterInLiter(request.getWaterInLiter());
+                newEntry.setFertilizerInMl(request.getFertilizerInMl());
+                careEntryRepository.save(newEntry);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Created"); // 201
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/care/data")
+    public ResponseEntity<CareDataResponse> getCareData() {
+        List<String> timelines = Arrays.stream(Timeline.values())
+                .map(Timeline::toString)
+                .collect(Collectors.toList());
+
+        List<CareDataResponse.PlantSummary> plantSummaries = plantRepository.findAll().stream()
+                .map(p -> new CareDataResponse.PlantSummary(p.getId(), p.getNickname()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new CareDataResponse(timelines, plantSummaries));
+    }
+
 
     @GetMapping
     public ResponseEntity<List<PlantEntity>> getAllPlants() {
