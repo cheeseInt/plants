@@ -43,9 +43,9 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version> <!-- oder aktuelle Version -->
             <scope>provided</scope>
         </dependency>
-
         <!-- ModelMapper -->
         <dependency>
             <groupId>org.modelmapper</groupId>

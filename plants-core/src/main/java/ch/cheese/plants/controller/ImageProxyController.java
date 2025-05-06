@@ -12,9 +12,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping("/proxy")
+@Slf4j
 public class ImageProxyController {
 
     private final PlantRepository plantRepository;
