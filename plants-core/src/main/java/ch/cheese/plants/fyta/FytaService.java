@@ -28,7 +28,7 @@ public class FytaService {
     }
 
     public FytaUserPlantsResponse fetchUserPlants() {
-        log.info("Fetching user plants");
+        log.info("Fetching user plants from {}", webClient.toString());
         ResponseEntity<FytaUserPlantsResponse> response = webClient.get()
                 .uri("/api/user-plant")
                 .headers(headers -> headers.setBearerAuth(getAccessToken(false)))
