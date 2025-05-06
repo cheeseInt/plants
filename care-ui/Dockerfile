@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk
+FROM openjdk:21
 WORKDIR /app
 COPY target/care-ui-*.jar app.jar
 EXPOSE 8081
