@@ -12,7 +12,6 @@
 
     <modules>
         <module>plants-core</module>
-        <module>care-ui</module>
     </modules>
 
     <properties>

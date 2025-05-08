@@ -25,5 +25,16 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="AWS Glue" read-only="true" uuid="70b0b31a-bddb-4b6e-920e-2a9da8c45e3b">
+      <synchronize>true</synchronize>
+      <remarks>Wrapper For AWS Glue from Big Data Tools plugin</remarks>
+      <jdbc-driver>com.dbschema.ZeppelinSparkJdbcDriver</jdbc-driver>
+      <jdbc-url>AWS Glue@glueConnections@-4594571609868656592</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="forceUseDriverIcon" value="true" />
+        <property name="connectionId" value="AWS Glue@glueConnections@-4594571609868656592" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
