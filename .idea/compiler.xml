@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="plants-config" target="1.8" />
+      <module name="plants-config" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
