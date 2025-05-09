@@ -1,29 +1,26 @@
 package ch.cheese.plants.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "care_entries", uniqueConstraints = @UniqueConstraint(columnNames = {"plant_id", "date_utc"}))
+@Table(name = "plant_care")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CareEntryEntity {
+public class PlantCareEntryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ✅ JPA benötigt genau dieses Feld
+    private Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "plant_id")
     private PlantEntity plant;
 
-    @Column(name = "date_utc", nullable = false)
-    private LocalDateTime dateUtc;
+    @Column(name = "care_time", nullable = false)
+    private LocalDateTime careTime;
 
     @Column(name = "water_in_liter")
     private BigDecimal waterInLiter;

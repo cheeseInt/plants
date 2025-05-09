@@ -1,10 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("th.sortable").forEach(function (header, index) {
+            header.addEventListener("click", function () {
+                const table = header.closest("table");
+                const tbody = table.querySelector("tbody");
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                const asc = !header.classList.contains("asc");
+
+                rows.sort((a, b) => {
+                    const cellA = a.children[index].textContent.trim();
+                    const cellB = b.children[index].textContent.trim();
+                    return asc
+                        ? cellA.localeCompare(cellB, undefined, { numeric: true })
+                        : cellB.localeCompare(cellA, undefined, { numeric: true });
+                });
+
+                header.classList.toggle("asc", asc);
+                header.classList.toggle("desc", !asc);
+
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+    });
+</script>
+<style>
+    th.sortable {
+        cursor: pointer;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    th.sortable::after {
+        content: "⇅";
+        position: absolute;
+        right: 5px;
+        font-size: 0.8em;
+        color: #999;
+    }
+
+    th.sortable.asc::after {
+        content: "🔼";
+        color: #333;
+    }
+
+    th.sortable.desc::after {
+        content: "🔽";
+        color: #333;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+
 <head>
     <title>Pflanzenübersicht</title>
     <meta charset="UTF-8"/>
 </head>
 <body>
+<h2>Pflegeeintrag erfassen</h2>
+<form method="post" action="/plants/care">
+    <label for="plantId">Pflanze:</label>
+    <select name="plantId" id="plantId" required>
+        <option th:each="plant : ${plants}"
+                th:value="${plant.id}"
+                th:text="${plant.nickname}">Pflanze</option>
+    </select><br/><br/>
+
+    <label for="careTime">Pflegedatum & Uhrzeit:</label>
+    <input type="datetime-local" name="careTime" id="careTime" required/><br/><br/>
+
+    <label for="waterInLiter">Wasser (Liter):</label>
+    <input type="number" step="0.01" name="waterInLiter" id="waterInLiter"/><br/><br/>
+
+    <label for="fertilizerInMl">Dünger (ml):</label>
+    <input type="number" step="1" name="fertilizerInMl" id="fertilizerInMl"/><br/><br/>
+
+    <button type="submit">Eintrag speichern</button>
+</form>
+
+<hr/>
+
+<h2>Pflegeeinträge suchen</h2>
+<form method="get" action="/plants/care">
+    <label for="nickname">Pflanze:</label>
+    <select name="nickname" id="nickname">
+        <option value="">-- Alle --</option>
+        <option th:each="plant : ${plants}"
+                th:value="${plant.nickname}"
+                th:text="${plant.nickname}"
+                th:selected="${plant.nickname == searchNickname}">Pflanze</option>
+    </select>
+
+    <label for="date">Datum:</label>
+    <input type="date" name="date" id="date" th:value="${searchDate}"/>
+
+    <button type="submit">Suchen</button>
+</form>
+
+<h2>Pflegeeinträge</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th class="sortable">Pflanze</th>
+        <th class="sortable">Datum</th>
+        <th class="sortable">Wasser (L)</th>
+        <th class="sortable">Dünger (ml)</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="entry : ${entries}">
+        <form method="post" action="/plants/care/update">
+            <td th:text="${entry.plant.nickname}">Pflanze</td>
+            <td th:text="${#temporals.format(entry.careTime, 'yyyy-MM-dd HH:mm')}">Datum</td>
+            <td>
+                <input type="number" name="waterInLiter" step="0.01" th:value="${entry.waterInLiter}"/>
+            </td>
+            <td>
+                <input type="number" name="fertilizerInMl" step="1" th:value="${entry.fertilizerInMl}"/>
+            </td>
+            <td>
+                <input type="hidden" name="id" th:value="${entry.id}"/>
+                <button type="submit">Speichern</button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+
+
 <h1>Alle Pflanzen</h1>
 <table border="1">
     <thead>

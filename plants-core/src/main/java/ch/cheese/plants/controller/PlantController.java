@@ -4,13 +4,12 @@ import ch.cheese.plants.config.Timeline;
 import ch.cheese.plants.dto.CareEntryDto;
 import ch.cheese.plants.dto.CareEntryRequest;
 import ch.cheese.plants.dto.PlantSummaryDto;
-import ch.cheese.plants.entity.CareEntryEntity;
+import ch.cheese.plants.entity.PlantCareEntryEntity;
 import ch.cheese.plants.entity.PlantEntity;
 import ch.cheese.plants.repository.CareEntryRepository;
 import ch.cheese.plants.repository.PlantRepository;
 import ch.cheese.plants.service.PlantImportService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,6 @@ import ch.cheese.plants.dto.CareEntryQueryRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -71,14 +69,14 @@ public class PlantController {
 
     @PostMapping("/care/care-entries/query")
     public ResponseEntity<List<CareEntryDto>> queryCareEntries(@RequestBody CareEntryQueryRequest request) {
-        List<CareEntryEntity> entries;
+        List<PlantCareEntryEntity> entries;
 
         if (request.getPlantId() != null && request.getFromDate() != null) {
-            entries = careEntryRepository.findByPlant_IdAndDateUtcAfter(request.getPlantId(), request.getFromDate());
+            entries = careEntryRepository.findByPlant_IdAndCareTimeAfter(request.getPlantId(), request.getFromDate());
         } else if (request.getPlantId() != null) {
             entries = careEntryRepository.findByPlant_Id(request.getPlantId());
         } else if (request.getFromDate() != null) {
-            entries = careEntryRepository.findByDateUtcAfter(request.getFromDate());
+            entries = careEntryRepository.findByCareTimeAfter(request.getFromDate());
         } else {
             entries = careEntryRepository.findAll();
         }
@@ -87,7 +85,7 @@ public class PlantController {
             CareEntryDto dto = new CareEntryDto();
             dto.setId(entry.getId());
             dto.setPlantId(entry.getPlant().getId());
-            dto.setDateUtc(entry.getDateUtc());
+            dto.setDateUtc(entry.getCareTime());
             dto.setWaterInLiter(entry.getWaterInLiter());
             dto.setFertilizerInMl(entry.getFertilizerInMl());
             return dto;
@@ -114,11 +112,11 @@ public class PlantController {
             }
 
             PlantEntity plant = plantOpt.get();
-            Optional<CareEntryEntity> optionalEntry = careEntryRepository
-                    .findByPlant_IdAndDateUtc(request.getPlantId(), request.getDateUtc());
+            Optional<PlantCareEntryEntity> optionalEntry = careEntryRepository
+                    .findByPlant_IdAndCareTime(request.getPlantId(), request.getDateUtc());
 
             if (optionalEntry.isPresent()) {
-                CareEntryEntity existing = optionalEntry.get();
+                PlantCareEntryEntity existing = optionalEntry.get();
 
                 boolean changed = false;
 
@@ -140,9 +138,9 @@ public class PlantController {
                 }
 
             } else {
-                CareEntryEntity newEntry = new CareEntryEntity();
+                PlantCareEntryEntity newEntry = new PlantCareEntryEntity();
                 newEntry.setPlant(plant);
-                newEntry.setDateUtc(request.getDateUtc());
+                newEntry.setCareTime(request.getDateUtc());
                 newEntry.setWaterInLiter(request.getWaterInLiter());
                 newEntry.setFertilizerInMl(request.getFertilizerInMl());
                 careEntryRepository.save(newEntry);
