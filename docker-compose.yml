@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana-data:/var/lib/grafana/data
+      - grafana_data:/var/lib/grafana
     restart: unless-stopped
 
   postgres:
@@ -37,5 +37,5 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
 volumes:
-  grafana-data:
+  grafana_data:
   pgdata:
