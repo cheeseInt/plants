@@ -53,4 +53,4 @@ volumes:
     # Wenn Sie das Volume komplett außerhalb von Docker Compose (mit `docker volume create ...`) erstellen und verwalten,
     # könnten Sie auch `external: true` verwenden. Die obige Definition ist jedoch flexibler,
     # da Compose das Volume erstellt, falls es nicht existiert, oder das existierende (und von Ihnen befüllte) verwendet.
-
+    external: true
