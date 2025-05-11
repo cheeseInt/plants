@@ -4,8 +4,3 @@ services:
     command: ["echo", "🌱 plants-core wird lokal in IntelliJ gestartet"]
     deploy:
       replicas: 0
-
-  care-ui:
-    command: ["echo", "🖥️ care-ui wird lokal in IntelliJ gestartet"]
-    deploy:
-      replicas: 0

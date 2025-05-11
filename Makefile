@@ -1,7 +1,7 @@
 # -------------------------
 # Konfigurierbare Variablen
 # -------------------------
-MODULES = plants-core care-ui
+MODULES = plants-core
 PROFILE ?= dev
 JAR_CMD = mvn clean package spring-boot:repackage -DskipTests
 

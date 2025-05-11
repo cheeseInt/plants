@@ -2,6 +2,7 @@ package ch.cheese.plants.controller;
 
 import ch.cheese.plants.entity.PlantCareEntryEntity;
 import ch.cheese.plants.entity.PlantEntity;
+import ch.cheese.plants.fyta.FytaService;
 import ch.cheese.plants.repository.PlantCareRepository;
 import ch.cheese.plants.repository.PlantRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +22,7 @@ public class PlantViewController {
 
     private final PlantRepository plantRepository;
     private final PlantCareRepository plantCareRepository;
+    private final ZoneId localZone = ZoneId.of("Europe/Zurich");
 
     @PostMapping("/plants/care/update")
     public String updateCareEntry(@RequestParam("id") Long id,
@@ -73,9 +74,15 @@ public class PlantViewController {
 
         Optional<PlantEntity> plantOpt = plantRepository.findById(plantId);
         if (plantOpt.isPresent()) {
+            // In ZonedDateTime umwandeln
+            ZonedDateTime zonedDateTime = careTime.atZone(localZone);
+
+            // In UTC konvertieren
+            ZonedDateTime utcDateTime = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+
             PlantCareEntryEntity entry = new PlantCareEntryEntity();
             entry.setPlant(plantOpt.get());
-            entry.setCareTime(careTime);
+            entry.setCareTime(utcDateTime.toLocalDateTime());
             entry.setWaterInLiter(waterInLiter);
             entry.setFertilizerInMl(fertilizerInMl);
             plantCareRepository.save(entry);
