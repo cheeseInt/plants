@@ -1,17 +1,21 @@
 package ch.cheese.plants.service;
 
 import ch.cheese.plants.config.Timeline;
+import ch.cheese.plants.entity.BatteryLogEntity;
 import ch.cheese.plants.entity.MeasurementEntity;
 import ch.cheese.plants.entity.PlantEntity;
 import ch.cheese.plants.fyta.*;
 import ch.cheese.plants.mapper.MeasurementMapper;
 import ch.cheese.plants.mapper.PlantMapper;
+import ch.cheese.plants.repository.BatteryLogRepository;
 import ch.cheese.plants.repository.MeasurementRepository;
 import ch.cheese.plants.repository.PlantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,14 +29,16 @@ public class PlantImportService {
     private final MeasurementMapper measurementMapper;
     private final PlantRepository plantRepository;
     private final MeasurementRepository measurementRepository;
+    private final BatteryLogRepository batteryLogRepository;
 
 
-    public PlantImportService(FytaService fytaService, PlantMapper plantMapper, MeasurementMapper measurementMapper, PlantRepository plantRepository, MeasurementRepository measurementRepository) {
+    public PlantImportService(FytaService fytaService, PlantMapper plantMapper, MeasurementMapper measurementMapper, PlantRepository plantRepository, MeasurementRepository measurementRepository, BatteryLogRepository batteryLogRepository) {
         this.fytaService = fytaService;
         this.plantMapper = plantMapper;
         this.measurementMapper = measurementMapper;
         this.plantRepository = plantRepository;
         this.measurementRepository = measurementRepository;
+        this.batteryLogRepository = batteryLogRepository;
     }
 
     private List<Plant> plantList;
@@ -75,19 +81,27 @@ public class PlantImportService {
         int imported = 0;
         log.info("Starting to import details from {} plants", plantList.size());
         for (Plant plant : plantList) {
-            if (!plantRepository.existsById((long) plant.getId())) {
-                PlantEntity entity = plantMapper.toEntity(plant);
-                // Hole Detaildaten
-                FytaPlantDetailResponse detail = fytaService.fetchUserPlantsDetail(String.valueOf(plant.getId()));
-                // erweitere Entity mit Detaildaten (nur leere Felder)
-                plantMapper.updateEntityWithDetails(entity, detail);
-                // speichere in die db
-                log.info("Saving plant {} with details", plant.getId());
-                plantRepository.save(entity);
-                imported++;
-            }
+             PlantEntity entity = plantMapper.toEntity(plant);
+            // Hole Detaildaten
+            FytaPlantDetailResponse detail = fytaService.fetchUserPlantsDetail(String.valueOf(plant.getId()));
+            // erweitere Entity mit Detaildaten (nur leere Felder)
+            plantMapper.updateEntityWithDetails(entity, detail);
+            // speichere in die db
+            log.info("Saving plant {} with details", plant.getId());
+            plantRepository.save(entity);
+            imported++;
+
+            log.info("Saving battery log for plant {} with response {}", plant.getId(), detail.toString());
+
+            BatteryLogEntity batteryLogEntity = new BatteryLogEntity();
+            batteryLogEntity.setPlant(entity);
+            batteryLogEntity.setBattery(Integer.valueOf(detail.getPlant().getMeasurements().getBattery())); // aus JSON-Response
+            batteryLogEntity.setDateUtc(LocalDateTime.now(ZoneId.of("Europe/Zurich")).atZone(ZoneId.of("Europe/Zurich")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+            batteryLogRepository.save(batteryLogEntity);
+            log.info("Saved battery log for plant {}", plant.getId());
         }
         log.info("Imported {} plants from Fyta", imported);
+
 
     }
 

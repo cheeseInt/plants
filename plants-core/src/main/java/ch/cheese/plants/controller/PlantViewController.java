@@ -2,7 +2,6 @@ package ch.cheese.plants.controller;
 
 import ch.cheese.plants.entity.PlantCareEntryEntity;
 import ch.cheese.plants.entity.PlantEntity;
-import ch.cheese.plants.fyta.FytaService;
 import ch.cheese.plants.repository.PlantCareRepository;
 import ch.cheese.plants.repository.PlantRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +23,6 @@ public class PlantViewController {
     private final PlantCareRepository plantCareRepository;
     private final ZoneId localZone = ZoneId.of("Europe/Zurich");
 
-    @PostMapping("/plants/care/update")
-    public String updateCareEntry(@RequestParam("id") Long id,
-                                  @RequestParam("waterInLiter") BigDecimal waterInLiter,
-                                  @RequestParam("fertilizerInMl") Integer fertilizerInMl) {
-
-        Optional<PlantCareEntryEntity> entryOpt = plantCareRepository.findById(id);
-        if (entryOpt.isPresent()) {
-            PlantCareEntryEntity entry = entryOpt.get();
-            entry.setWaterInLiter(waterInLiter);
-            entry.setFertilizerInMl(fertilizerInMl);
-            plantCareRepository.save(entry);
-        }
-
-        return "redirect:/plants/care";
-    }
 
     @GetMapping("/plants/care")
     public String viewCareEntries(@RequestParam(name = "nickname", required = false) String nickname,

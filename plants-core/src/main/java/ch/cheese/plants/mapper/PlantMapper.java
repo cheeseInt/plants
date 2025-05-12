@@ -98,42 +98,55 @@ public class PlantMapper {
 
     public void updateEntityWithDetails(PlantEntity entity, FytaPlantDetailResponse detail) {
 
-        entity.setAirtable_id(detail.getAirtable_id());
-        if (entity.getGenus() == null) {
-            entity.setGenus(detail.getGenus());
+        entity.setAirtable_id(detail.getPlant().getAirtable_id());
+        if (entity.getGenus() == null && detail.getPlant().getGenus() != null) {
+            entity.setGenus(detail.getPlant().getGenus());
         }
-        entity.setPot_size(detail.getPot_size());
-        entity.setDrainage(detail.getDrainage());
-        entity.setLight_factor(detail.getLight_factor());
-        if (entity.getOwner() == null) {
-            entity.setOwner(modelMapper.map(detail.getOwner(), OwnerEntity.class));
+        entity.setPot_size(detail.getPlant().getPot_size());
+        entity.setDrainage(detail.getPlant().getDrainage());
+        entity.setLight_factor(detail.getPlant().getLight_factor());
+        if (entity.getOwner() == null && detail.getPlant().getOwner() != null) {
+            entity.setOwner(modelMapper.map(detail.getPlant().getOwner(), OwnerEntity.class));
         }
-        entity.setSoil_type_id(detail.getSoil_type_id());
-        entity.setGathering_data(detail.getGathering_data());
-        entity.setIs_illegal(detail.getIs_illegal());
-        entity.setNot_supported(detail.getNot_supported());
-        entity.setSensor_update_available(detail.getSensor_update_available());
-        if (entity.getLocation() == null) {
-            entity.setLocation(detail.getLocation());
+        entity.setSoil_type_id(detail.getPlant().getSoil_type_id());
+        if (entity.getGathering_data() == null && detail.getPlant().getGathering_data() != null) {
+            entity.setGathering_data(detail.getPlant().getGathering_data());
         }
-        entity.setVerification(detail.getVerification());
-        entity.setIs_productive_plant(detail.getIs_productive_plant());
-        if (entity.getDismissed_sensor_message_at() == null) {
-            entity.setDismissed_sensor_message_at(detail.getDismissed_sensor_message_at());
+        if (entity.getIs_illegal() == null && detail.getPlant().getIs_illegal() != null) {
+            entity.setIs_illegal(detail.getPlant().getIs_illegal());
         }
-        if (entity.getMissing() == null || entity.getMissing().isEmpty()) {
-            entity.setMissing(detail.getMissing());
+        if (entity.getNot_supported() == null && detail.getPlant().getNot_supported() != null) {
+            entity.setNot_supported(detail.getPlant().getNot_supported());
         }
-        if (entity.getMeasurements() == null) {
-            entity.setMeasurements(modelMapper.map(detail.getMeasurements(), MeasurementsEntity.class));
+        if (entity.getSensor_update_available() == null && detail.getPlant().getSensor_update_available() != null) {
+            entity.setSensor_update_available(detail.getPlant().getSensor_update_available());
         }
-        entity.setTemperature_unit(detail.getTemperature_unit());
-        if (entity.getKnow_hows() == null || entity.getKnow_hows().isEmpty()) {
-            entity.setKnow_hows(detail.getKnow_hows());
+        if (entity.getLocation() == null && detail.getPlant().getLocation() != null) {
+            entity.setLocation(detail.getPlant().getLocation());
         }
-        if (entity.getDevice_menu() == null) {
-            entity.setDevice_menu(modelMapper.map(detail.getDevice_menu(), Device_menuEntity.class));
+        if (entity.getVerification() == null && detail.getPlant().getVerification() != null) {
+            entity.setVerification(detail.getPlant().getVerification());
+        }
+        if (entity.getIs_productive_plant() == null && detail.getPlant().getIs_productive_plant() != null) {
+            entity.setIs_productive_plant(detail.getPlant().getIs_productive_plant());
+        }
+        if (entity.getDismissed_sensor_message_at() == null && detail.getPlant().getDismissed_sensor_message_at() != null) {
+            entity.setDismissed_sensor_message_at(detail.getPlant().getDismissed_sensor_message_at());
+        }
+        // TODO
+//        if ((entity.getMissing() == null || entity.getMissing().isEmpty()) && detail.getPlant().getMissing() != null && !detail.getPlant().getMissing().isEmpty()) {
+//            entity.setMissing(detail.getPlant().getMissing());
+//        }
+        if (entity.getMeasurements() == null && detail.getPlant().getMeasurements() != null) {
+            entity.setMeasurements(modelMapper.map(detail.getPlant().getMeasurements(), MeasurementsEntity.class));
+        }
+        entity.setTemperature_unit(detail.getPlant().getTemperature_unit());
+        // TODO
+//        if ((entity.getKnow_hows() == null || entity.getKnow_hows().isEmpty()) && detail.getPlant().getKnow_hows() != null && !detail.getPlant().getKnow_hows().isEmpty()) {
+//            entity.setKnow_hows(detail.getPlant().getKnow_hows());
+//        }
+        if (entity.getDevice_menu() == null && detail.getPlant().getDevice_menu() != null) {
+            entity.setDevice_menu(modelMapper.map(detail.getPlant().getDevice_menu(), Device_menuEntity.class));
         }
     }
-
 }
