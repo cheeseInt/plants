@@ -1,5 +1,6 @@
 package ch.cheese.plants.scheduler;
 
+import ch.cheese.plants.config.FytaProperties;
 import ch.cheese.plants.config.Timeline;
 import ch.cheese.plants.service.PlantImportService;
 import jakarta.annotation.PostConstruct;
@@ -14,12 +15,15 @@ import org.springframework.stereotype.Component;
 public class PlantImportScheduler {
 
     private final PlantImportService plantImportService;
+    private final FytaProperties fytaProperties;
 
     // 🟢 Beim Start der App
     @PostConstruct
     public void importOnceOnStartup() {
         log.info("Running initial plant import with Timeline.MONTH");
-        plantImportService.importPlantsFromFyta(Timeline.MONTH);
+        if(fytaProperties.getStartLoad() != null && fytaProperties.getStartLoad()) {
+            plantImportService.importPlantsFromFyta(Timeline.MONTH);
+        }
     }
 
     // 🔁 Alle 6 Stunden

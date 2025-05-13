@@ -116,6 +116,26 @@
     </script>
 </head>
 <body>
+
+<hr/>
+
+
+<h2>Pflanzendaten importieren</h2>
+<form th:action="@{/plants/import}" method="post">
+    <label for="timeline">Zeitraum:</label>
+    <select name="timeline" id="timeline">
+        <option th:each="tl : ${timelines}" th:value="${tl}" th:text="${tl}"></option>
+    </select>
+    <button type="submit">Import starten</button>
+</form>
+
+<div th:if="${importResponse}">
+    <p><strong>Response:</strong> <span th:text="${importResponse}"></span></p>
+</div>
+
+<hr/>
+
+
 <h2>Pflegeeintrag erfassen</h2>
 <form method="post" action="/plants/care">
     <label for="plantId">Pflanze:</label>
@@ -151,6 +171,9 @@
     <button type="submit">Suchen</button>
 </form>
 
+<hr/>
+
+
 <h2>Pflegeeinträge</h2>
 <table>
     <thead>
@@ -178,6 +201,9 @@
     </tbody>
 </table>
 
+<hr/>
+
+
 <h1>Alle Pflanzen</h1>
 <table>
     <thead>
@@ -193,5 +219,9 @@
     </tr>
     </tbody>
 </table>
+
+<hr/>
+
+
 </body>
 </html>

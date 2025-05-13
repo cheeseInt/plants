@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class FytaProperties {
     private String apiBaseUrl;
     private Auth auth = new Auth();
+    private Boolean startLoad;
 
     @Getter
     @Setter

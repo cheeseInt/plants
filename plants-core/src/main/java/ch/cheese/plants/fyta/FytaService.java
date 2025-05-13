@@ -21,16 +21,15 @@ public class FytaService {
     private String accessToken; // lokal gespeicherter Token
     private LocalDateTime expiresAt; // lokal gespeicherter Ablauf Datum des Tokens
     private Integer loginCount = 0;
-    private final String baseUrl = "https://web.fyta.de";
 
-    public FytaService(WebClient.Builder webClientBuilder, FytaProperties fytaProperties, FytaProperties fytaProperties1) {
-        this.fytaProperties = fytaProperties1;
+    public FytaService(WebClient.Builder webClientBuilder, FytaProperties fytaProperties) {
+        this.fytaProperties = fytaProperties;
 
-        this.webClient = webClientBuilder.baseUrl(baseUrl).build();
+        this.webClient = webClientBuilder.baseUrl(this.fytaProperties.getApiBaseUrl()).build();
     }
 
     public FytaUserPlantsResponse fetchUserPlants() {
-        log.info("Fetching user plants from {}", baseUrl);
+        log.info("Fetching user plants from {}", fytaProperties.getApiBaseUrl());
         ResponseEntity<FytaUserPlantsResponse> response = webClient.get()
                 .uri("/api/user-plant")
                 .headers(headers -> headers.setBearerAuth(getAccessToken(false)))
