@@ -95,6 +95,7 @@ public class PlantImportService {
 
             BatteryLogEntity batteryLogEntity = new BatteryLogEntity();
             batteryLogEntity.setPlant(entity);
+            // TODO what happens if NULL
             batteryLogEntity.setBattery(Integer.valueOf(detail.getPlant().getMeasurements().getBattery())); // aus JSON-Response
             batteryLogEntity.setDateUtc(LocalDateTime.now(ZoneId.of("Europe/Zurich")).atZone(ZoneId.of("Europe/Zurich")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
             batteryLogRepository.save(batteryLogEntity);
