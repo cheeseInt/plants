@@ -32,8 +32,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-    - pgdata:/var/lib/postgresql/data
-    #- ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
 
   plants-core:
     build:
@@ -49,6 +48,3 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
-volumes:
-  pgdata:
