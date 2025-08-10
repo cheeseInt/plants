@@ -1,15 +1,15 @@
-
+name: my-plants
 
 services:
   grafana:
-    image: grafana/grafana:12.0.0 # Die neueste Version
+    image: grafana/grafana:${GRAFANA_VERSION:-12}
     container_name: grafana-plants
     ports:
       - "3000:3000" # Mappt Port 3000 des Containers auf Port 3000 Ihres Hosts
     volumes:
-      - plants_grafana_data:/var/lib/grafana # Mappt das Named Volume
+      - ${GRAFANA_DATA_LOCATION}:/var/lib/grafana
     user: "472" # Stellt sicher, dass Grafana mit der korrekten UID läuft (Standard für grafana/grafana)
-    restart: unless-stopped
+    restart: always
     environment:
       # Hier können Sie Grafana-Konfigurationen über Umgebungsvariablen setzen
       # Zum Beispiel:
@@ -20,16 +20,16 @@ services:
       pass:
 
   postgres:
-    image: postgres:16
+    image: postgres:${POSTGRES_VERSION:-17}
     container_name: myplants-postgres
-    restart: unless-stopped
+    restart: always
     env_file:
       - .env
       - .secret
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
 
   plants-core:
     build:
@@ -37,7 +37,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - postgres
-    restart: unless-stopped
+    restart: always
     ports:
       - "8081:8081"
     environment:
@@ -45,12 +45,3 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
-volumes:
-  pgdata:
-  plants_grafana_data:
-    name: plants_grafana_data # Definiert das Named Volume explizit
-    # Wenn Sie das Volume komplett außerhalb von Docker Compose (mit `docker volume create ...`) erstellen und verwalten,
-    # könnten Sie auch `external: true` verwenden. Die obige Definition ist jedoch flexibler,
-    # da Compose das Volume erstellt, falls es nicht existiert, oder das existierende (und von Ihnen befüllte) verwendet.
-#    external: true
