@@ -4,6 +4,9 @@ services:
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION:-12}
     container_name: grafana-plants
+    env_file:
+      - .env
+      - .secret
     ports:
       - "3000:3000" # Mappt Port 3000 des Containers auf Port 3000 Ihres Hosts
     volumes:
