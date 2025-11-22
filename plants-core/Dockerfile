@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY target/plants-core-*.jar app.jar
 EXPOSE 8080
