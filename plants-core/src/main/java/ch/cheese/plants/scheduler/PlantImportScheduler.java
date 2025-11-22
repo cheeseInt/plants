@@ -20,9 +20,9 @@ public class PlantImportScheduler {
     // 🟢 Beim Start der App
     @PostConstruct
     public void importOnceOnStartup() {
-        log.info("Running initial plant import with Timeline.MONTH");
+        log.info("Running initial plant import with Timeline.WEEK");
         if(fytaProperties.getStartLoad() != null && fytaProperties.getStartLoad()) {
-            plantImportService.importPlantsFromFyta(Timeline.MONTH);
+            plantImportService.importPlantsFromFyta(Timeline.WEEK);
         }
     }
 
