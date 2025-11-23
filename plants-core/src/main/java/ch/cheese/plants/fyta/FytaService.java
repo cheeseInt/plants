@@ -18,7 +18,7 @@ public class FytaService {
 
     private final WebClient webClient;
     private final FytaProperties fytaProperties;
-    private String accessToken; // lokal gespeicherter Token
+    private String accessToken = "19861c806bebd45ba42ffb9012edc7d0a3b3c1763713176693";
     private LocalDateTime expiresAt; // lokal gespeicherter Ablauf Datum des Tokens
     private Integer loginCount = 0;
     private String baseURI = "https://web.fyta.de";
@@ -108,60 +108,63 @@ public class FytaService {
     }
 
     private String loginAndGetAccessToken(String email, String password, boolean force) {
-        if (!force && accessToken != null && expiresAt != null && expiresAt.isAfter(LocalDateTime.now())) {
-            return accessToken; // Token ist noch gültig
-        }
-        log.info("Logging in with email {} and password {}", email, password);
-        LoginRequest request = new LoginRequest(email, password);
-        loginCount++;
-        if(loginCount > 3) {
-            log.error("Too many login attempts. Aborting login");
-            throw new IllegalStateException("Too many login attempts");
-        }
-        try {
-            ResponseEntity<LoginResponse> response = webClient.post()
-                    .uri("/api/auth/login")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(request)
-                    .retrieve()
-                    .toEntity(LoginResponse.class)
-                    .block();
 
-            if (response == null) {
-                log.error("No response received from login endpoint");
-                return null;
-            }
+//        if (!force && accessToken != null && expiresAt != null && expiresAt.isAfter(LocalDateTime.now())) {
+//            return accessToken; // Token ist noch gültig
+//        }
+//        log.info("Logging in with email {} and password {}", email, password);
+//        LoginRequest request = new LoginRequest(email, password);
+//        loginCount++;
+//        if(loginCount > 3) {
+//            log.error("Too many login attempts. Aborting login");
+//            throw new IllegalStateException("Too many login attempts");
+//        }
+//        try {
+//            ResponseEntity<LoginResponse> response = webClient.post()
+//                    .uri("/api/auth/login")
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .bodyValue(request)
+//                    .retrieve()
+//                    .toEntity(LoginResponse.class)
+//                    .block();
+//
+//            if (response == null) {
+//                log.error("No response received from login endpoint");
+//                return null;
+//            }
+//
+//            HttpStatusCode statusCode = response.getStatusCode();
+//
+//            if (statusCode == HttpStatus.UNAUTHORIZED) {
+//                log.error("Login failed: unauthorized (401) for email {}", email);
+//                this.accessToken = null;
+//                return null;
+//            }
+//
+//            if (statusCode != HttpStatus.OK) {
+//                log.error("Login failed: unexpected response status {} for email {}", statusCode, email);
+//                this.accessToken = null;
+//                return null;
+//            }
+//
+//            LoginResponse loginResponse = response.getBody();
+//            if (loginResponse == null || loginResponse.getAccessToken() == null) {
+//                log.error("Login response was successful, but access token is missing");
+//                this.accessToken = null;
+//                return null;
+//            }
+//            this.accessToken = loginResponse.getAccessToken();
+//            this.expiresAt = LocalDateTime.now().plusSeconds(loginResponse.getExpiresIn()).minusDays(2);
+//            log.info("Login successful. Token expires at {}", this.expiresAt);
+//            return accessToken;
+//
+//        } catch (Exception e) {
+//            log.error("Login failed due to exception for email {}", email, e);
+//            this.accessToken = null;
+//            return null;
+//        }
+        return accessToken;
 
-            HttpStatusCode statusCode = response.getStatusCode();
-
-            if (statusCode == HttpStatus.UNAUTHORIZED) {
-                log.error("Login failed: unauthorized (401) for email {}", email);
-                this.accessToken = null;
-                return null;
-            }
-
-            if (statusCode != HttpStatus.OK) {
-                log.error("Login failed: unexpected response status {} for email {}", statusCode, email);
-                this.accessToken = null;
-                return null;
-            }
-
-            LoginResponse loginResponse = response.getBody();
-            if (loginResponse == null || loginResponse.getAccessToken() == null) {
-                log.error("Login response was successful, but access token is missing");
-                this.accessToken = null;
-                return null;
-            }
-            this.accessToken = loginResponse.getAccessToken();
-            this.expiresAt = LocalDateTime.now().plusSeconds(loginResponse.getExpiresIn()).minusDays(2);
-            log.info("Login successful. Token expires at {}", this.expiresAt);
-            return accessToken;
-
-        } catch (Exception e) {
-            log.error("Login failed due to exception for email {}", email, e);
-            this.accessToken = null;
-            return null;
-        }
     }
 
     public String getAccessToken(boolean force) {
