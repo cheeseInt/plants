@@ -8,7 +8,7 @@ services:
       - .env
       - .secret
     ports:
-      - "3000:3000" # Mappt Port 3000 des Containers auf Port 3000 Ihres Hosts
+      - "192.168.1.17:3000:3000" # Mappt Port 3000 des Containers auf Port 3000 Ihres Hosts
     volumes:
       - ${GRAFANA_DATA_LOCATION}:/var/lib/grafana
     user: "472" # Stellt sicher, dass Grafana mit der korrekten UID läuft (Standard für grafana/grafana)
