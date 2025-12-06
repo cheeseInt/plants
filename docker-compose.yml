@@ -24,6 +24,7 @@ services:
       - GF_SERVER_HTTP_ADDR=0.0.0.0
       - GF_SERVER_DOMAIN=192.168.1.17
       - GF_SERVER_ROOT_URL=http://192.168.1.17:3000/
+      - GF_SERVER_ENFORCE_DOMAIN=false
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-17}
