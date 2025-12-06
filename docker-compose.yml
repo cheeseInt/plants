@@ -13,14 +13,6 @@ services:
       - ${GRAFANA_DATA_LOCATION}:/var/lib/grafana
     user: "472" # Stellt sicher, dass Grafana mit der korrekten UID läuft (Standard für grafana/grafana)
     restart: always
-    environment:
-      # Hier können Sie Grafana-Konfigurationen über Umgebungsvariablen setzen
-      # Zum Beispiel:
-      # - GF_SECURITY_ADMIN_USER=admin
-      # - GF_SECURITY_ADMIN_PASSWORD=IhrSicheresPasswort
-      # - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
-      # - GF_SERVER_ROOT_URL=http://localhost:3000 # Wichtig, wenn Sie hinter einem Proxy laufen
-      # Wichtig für externe Erreichbarkeit / Redirects:
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-17}
