@@ -19,8 +19,6 @@ Thumbs.db
 logs/
 *.log
 
-# Environment-Dateien
-.env
 
 # Datenbank-Volume von Docker
 pgdata/
