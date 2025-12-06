@@ -21,13 +21,6 @@ services:
       # - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
       # - GF_SERVER_ROOT_URL=http://localhost:3000 # Wichtig, wenn Sie hinter einem Proxy laufen
       # Wichtig für externe Erreichbarkeit / Redirects:
-      - GF_SERVER_HTTP_ADDR=0.0.0.0
-      - GF_SERVER_DOMAIN=192.168.1.17
-      - GF_SERVER_ROOT_URL=http://192.168.1.17:3000/
-      - GF_SERVER_ENFORCE_DOMAIN=false
-      - GF_AUTH_GENERIC_OAUTH_LOGIN_ATTRIBUTE_PATH=preferred_username
-      - GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH=email
-      - GF_AUTH_GENERIC_OAUTH_NAME_ATTRIBUTE_PATH=name
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-17}
