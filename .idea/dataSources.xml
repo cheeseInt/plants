@@ -13,11 +13,11 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="plants@192.168.1.17" uuid="64152ef4-d819-415c-8b80-062d9eebfacf">
+    <data-source source="LOCAL" name="plants@192.168.1.16" uuid="64152ef4-d819-415c-8b80-062d9eebfacf">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://192.168.1.17:5432/plants</jdbc-url>
+      <jdbc-url>jdbc:postgresql://192.168.1.16:5432/plants</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

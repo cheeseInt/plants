@@ -18,7 +18,7 @@ public class FytaService {
 
     private final WebClient webClient;
     private final FytaProperties fytaProperties;
-    private String accessToken = "19861c806bebd45ba42ffb9012edc7d0a3b3c1763713176693";
+    private String accessToken = "198616e7a53f4dbbb4ccc98175195bc5f30551768936776006";
     private LocalDateTime expiresAt; // lokal gespeicherter Ablauf Datum des Tokens
     private Integer loginCount = 0;
     private String baseURI = "https://web.fyta.de";
