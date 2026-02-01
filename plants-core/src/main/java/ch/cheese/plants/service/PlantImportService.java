@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -96,9 +98,21 @@ public class PlantImportService {
             BatteryLogEntity batteryLogEntity = new BatteryLogEntity();
             batteryLogEntity.setPlant(entity);
             // TODO what happens if NULL
-            batteryLogEntity.setBattery(Integer.valueOf(detail.getPlant().getMeasurements().getBattery())); // aus JSON-Response
+
+            Integer battery = detail.getPlant().getSensors().stream()
+                    .map(FytaPlantDetailResponse.SensorInfo::getBattery_level)
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+
+            batteryLogEntity.setBattery(battery);
+            batteryLogEntity.setBattery(battery);
             batteryLogEntity.setDateUtc(LocalDateTime.now(ZoneId.of("Europe/Zurich")).atZone(ZoneId.of("Europe/Zurich")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
             batteryLogRepository.save(batteryLogEntity);
+
+//            batteryLogEntity.setBattery(Integer.valueOf(detail.getPlant().getMeasurements().getBattery())); // aus JSON-Response
+//            batteryLogEntity.setDateUtc(LocalDateTime.now(ZoneId.of("Europe/Zurich")).atZone(ZoneId.of("Europe/Zurich")).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+//            batteryLogRepository.save(batteryLogEntity);
             log.info("Saved battery log for plant {}", plant.getId());
         }
         log.info("Imported {} plants from Fyta", imported);

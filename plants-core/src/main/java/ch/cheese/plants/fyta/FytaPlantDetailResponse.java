@@ -48,11 +48,25 @@ public class FytaPlantDetailResponse {
         private Integer temperature_unit;
         private List<Object> know_hows;
         private DeviceMenu device_menu;
-    }
+        private List<SensorInfo> sensors;    }
 
     @Data
     public static class Owner {
         // leer oder individuell anpassbar bei Bedarf
+    }
+
+    @Data
+    public static class SensorInfo {
+        private String id;
+        private Integer status;
+        private String version;
+        private Integer sensor_type_id;
+        private Double light_factor;
+        private Integer probe_length_id;
+        private Double moisture_factor;
+        private Integer battery_level;
+        private String last_data_received_at;
+        private String created_at;
     }
 
     @Data
