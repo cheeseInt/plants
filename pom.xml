@@ -33,6 +33,12 @@
                 <artifactId>modelmapper</artifactId>
                 <version>3.1.1</version> <!-- ✅ Version explizit -->
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.34</version>  <!-- Muss stimmen! -->
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
