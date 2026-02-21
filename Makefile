@@ -3,7 +3,10 @@
 # -------------------------
 MODULES = plants-core
 PROFILE ?= dev
-JAVA21 := $(shell /usr/libexec/java_home -v 21)
+JAVA21 := $(shell /usr/libexec/java_home -v 21 2>/dev/null)
+ifeq ($(JAVA21),)
+JAVA21 := $(shell brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home
+endif
 JAR_CMD = JAVA_HOME=$(JAVA21) mvn clean package spring-boot:repackage -DskipTests
 
 # -------------------------
