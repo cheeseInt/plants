@@ -35,5 +35,4 @@ docker-compose.override.yml # falls du lokale Overrides nicht ins Repo willst
 *.swo
 
 .secret
-.secrets
 

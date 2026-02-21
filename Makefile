@@ -3,6 +3,8 @@
 # -------------------------
 MODULES = plants-core
 PROFILE ?= dev
+JAVA_HOME := $(shell /usr/libexec/java_home -v 21)
+export JAVA_HOME
 JAR_CMD = mvn clean package spring-boot:repackage -DskipTests
 
 # -------------------------
