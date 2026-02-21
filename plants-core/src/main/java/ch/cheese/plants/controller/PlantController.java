@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import ch.cheese.plants.dto.CareEntryQueryRequest;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/plants")
 public class PlantController {
 
-    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final PlantRepository plantRepository;
     private final PlantImportService plantImportService;
     private final CareEntryRepository careEntryRepository;
@@ -39,22 +37,21 @@ public class PlantController {
     }
 
     @GetMapping("/summary")
-    public List<PlantSummaryDto> getPlantSummaries() {
-        return plantRepository.findAll().stream()
+    public ResponseEntity<List<PlantSummaryDto>> getPlantSummaries() {
+        List<PlantSummaryDto> summaries = plantRepository.findAll().stream()
                 .map(plant -> new PlantSummaryDto(
                         plant.getId(),
                         plant.getCommon_name(),
                         "todo",
                         plant.getLocation(),
                         plant.getNickname(),
-                        LocalDateTime.parse(plant.getReceived_data_at(), formatter),
+                        plant.getReceived_data_at(),
                         false,
                         plant.getThumb_path(),
                         plant.getPlant_thumb_path()
                 ))
                 .collect(Collectors.toList());
-//                plant.getGarden() != null ? plant.getGarden().getName() : null,
-//                plant.isSensor_is_battery_low(),
+        return ResponseEntity.ok(summaries);
     }
 
 
@@ -105,50 +102,45 @@ public class PlantController {
 
     @PutMapping("/care/care-entry")
     public ResponseEntity<String> putCareEntry(@RequestBody CareEntryRequest request) {
-        try {
-            Optional<PlantEntity> plantOpt = plantRepository.findById(request.getPlantId());
-            if (plantOpt.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("Plant not found");
+        Optional<PlantEntity> plantOpt = plantRepository.findById(request.getPlantId());
+        if (plantOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body("Plant not found");
+        }
+
+        PlantEntity plant = plantOpt.get();
+        Optional<PlantCareEntryEntity> optionalEntry = careEntryRepository
+                .findByPlant_IdAndCareTime(request.getPlantId(), request.getDateUtc());
+
+        if (optionalEntry.isPresent()) {
+            PlantCareEntryEntity existing = optionalEntry.get();
+
+            boolean changed = false;
+
+            if (request.getWaterInLiter() != null && !request.getWaterInLiter().equals(existing.getWaterInLiter())) {
+                existing.setWaterInLiter(request.getWaterInLiter());
+                changed = true;
             }
 
-            PlantEntity plant = plantOpt.get();
-            Optional<PlantCareEntryEntity> optionalEntry = careEntryRepository
-                    .findByPlant_IdAndCareTime(request.getPlantId(), request.getDateUtc());
+            if (request.getFertilizerInMl() != null && !request.getFertilizerInMl().equals(existing.getFertilizerInMl())) {
+                existing.setFertilizerInMl(request.getFertilizerInMl());
+                changed = true;
+            }
 
-            if (optionalEntry.isPresent()) {
-                PlantCareEntryEntity existing = optionalEntry.get();
-
-                boolean changed = false;
-
-                if (request.getWaterInLiter() != null && !request.getWaterInLiter().equals(existing.getWaterInLiter())) {
-                    existing.setWaterInLiter(request.getWaterInLiter());
-                    changed = true;
-                }
-
-                if (request.getFertilizerInMl() != null && !request.getFertilizerInMl().equals(existing.getFertilizerInMl())) {
-                    existing.setFertilizerInMl(request.getFertilizerInMl());
-                    changed = true;
-                }
-
-                if (changed) {
-                    careEntryRepository.save(existing);
-                    return ResponseEntity.noContent().build(); // 204
-                } else {
-                    return ResponseEntity.ok("No changes"); // 200
-                }
-
+            if (changed) {
+                careEntryRepository.save(existing);
+                return ResponseEntity.noContent().build(); // 204
             } else {
-                PlantCareEntryEntity newEntry = new PlantCareEntryEntity();
-                newEntry.setPlant(plant);
-                newEntry.setCareTime(request.getDateUtc());
-                newEntry.setWaterInLiter(request.getWaterInLiter());
-                newEntry.setFertilizerInMl(request.getFertilizerInMl());
-                careEntryRepository.save(newEntry);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Created"); // 201
+                return ResponseEntity.ok("No changes"); // 200
             }
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        } else {
+            PlantCareEntryEntity newEntry = new PlantCareEntryEntity();
+            newEntry.setPlant(plant);
+            newEntry.setCareTime(request.getDateUtc());
+            newEntry.setWaterInLiter(request.getWaterInLiter());
+            newEntry.setFertilizerInMl(request.getFertilizerInMl());
+            careEntryRepository.save(newEntry);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Created"); // 201
         }
     }
 

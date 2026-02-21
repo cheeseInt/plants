@@ -3,6 +3,7 @@ package ch.cheese.plants.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Data
@@ -24,8 +25,8 @@ public class HubEntity {
     private int status;
 
     @JsonProperty("received_data_at")
-    private String received_data_at;
+    private LocalDateTime received_data_at;
 
     @JsonProperty("reached_hub_at")
-    private String reached_hub_at;
+    private LocalDateTime reached_hub_at;
 }

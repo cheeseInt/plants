@@ -3,6 +3,7 @@ package ch.cheese.plants.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Data
@@ -24,5 +25,5 @@ public class SensorEntity {
     private Boolean is_battery_low;
 
     @JsonProperty("received_data_at")
-    private String received_data_at;
+    private LocalDateTime received_data_at;
 }

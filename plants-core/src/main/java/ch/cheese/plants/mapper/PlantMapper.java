@@ -9,12 +9,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
 public class PlantMapper {
+
+    @Value("${app.proxy-base-url}")
+    private String proxyBaseUrl;
 
     private final FertilisationEntityMapper fertilisationMapper;
     private final NotificationsEntityMapper notificationsMapper;
@@ -23,7 +31,8 @@ public class PlantMapper {
     private final HubEntityMapper hubMapper;
     private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
-
+    private static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter D_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public PlantMapper(
             FertilisationEntityMapper fertilisationMapper,
@@ -55,7 +64,7 @@ public class PlantMapper {
             throw new RuntimeException("Fehler beim Serialisieren von peers", e);
         }
 
-        entity.setProxy_thumb_url("http://localhost:8081/proxy/thumb/" +plant.getId());
+        entity.setProxy_thumb_url(proxyBaseUrl + "/proxy/thumb/" + plant.getId());
 
 
         entity.setScientific_name(plant.getScientific_name());
@@ -70,7 +79,7 @@ public class PlantMapper {
         entity.setOrigin_path(plant.getOrigin_path());
         entity.setPlant_thumb_path(plant.getPlant_thumb_path());
         entity.setPlant_origin_path(plant.getPlant_origin_path());
-        entity.setReceived_data_at(plant.getReceived_data_at());
+        entity.setReceived_data_at(plant.getReceived_data_at() != null ? LocalDateTime.parse(plant.getReceived_data_at(), DT_FORMATTER) : null);
         entity.setTemperature_optimal_hours(plant.getTemperature_optimal_hours());
         entity.setLight_optimal_hours(plant.getLight_optimal_hours());
         entity.setEligibility(plant.getEligibility());
@@ -131,20 +140,12 @@ public class PlantMapper {
             entity.setIs_productive_plant(detail.getPlant().getIs_productive_plant());
         }
         if (entity.getDismissed_sensor_message_at() == null && detail.getPlant().getDismissed_sensor_message_at() != null) {
-            entity.setDismissed_sensor_message_at(detail.getPlant().getDismissed_sensor_message_at());
+            entity.setDismissed_sensor_message_at(LocalDate.parse(detail.getPlant().getDismissed_sensor_message_at(), D_FORMATTER));
         }
-        // TODO
-//        if ((entity.getMissing() == null || entity.getMissing().isEmpty()) && detail.getPlant().getMissing() != null && !detail.getPlant().getMissing().isEmpty()) {
-//            entity.setMissing(detail.getPlant().getMissing());
-//        }
         if (entity.getMeasurements() == null && detail.getPlant().getMeasurements() != null) {
             entity.setMeasurements(modelMapper.map(detail.getPlant().getMeasurements(), MeasurementsEntity.class));
         }
         entity.setTemperature_unit(detail.getPlant().getTemperature_unit());
-        // TODO
-//        if ((entity.getKnow_hows() == null || entity.getKnow_hows().isEmpty()) && detail.getPlant().getKnow_hows() != null && !detail.getPlant().getKnow_hows().isEmpty()) {
-//            entity.setKnow_hows(detail.getPlant().getKnow_hows());
-//        }
         if (entity.getDevice_menu() == null && detail.getPlant().getDevice_menu() != null) {
             entity.setDevice_menu(modelMapper.map(detail.getPlant().getDevice_menu(), Device_menuEntity.class));
         }

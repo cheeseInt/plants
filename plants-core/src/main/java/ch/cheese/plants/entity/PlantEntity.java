@@ -2,6 +2,8 @@ package ch.cheese.plants.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,7 +28,7 @@ public class PlantEntity {
     private String origin_path;
     private String plant_thumb_path;
     private String plant_origin_path;
-    private String received_data_at;
+    private LocalDateTime received_data_at;
     private int temperature_optimal_hours;
     private int light_optimal_hours;
     private Boolean eligibility;
@@ -49,7 +51,7 @@ public class PlantEntity {
     private String location;
     private Boolean verification;
     private Boolean is_productive_plant;
-    private String dismissed_sensor_message_at;
+    private LocalDate dismissed_sensor_message_at;
 
     @Lob
     @Column(name = "peers_json", columnDefinition = "TEXT")

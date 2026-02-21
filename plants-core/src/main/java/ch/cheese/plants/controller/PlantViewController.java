@@ -54,7 +54,6 @@ public class PlantViewController {
                 .filter(entry -> date == null || entry.getCareTime().toLocalDate().isEqual(date))
                 .toList();
 
-        // TODO - check if this is correct
         for (PlantCareEntryEntity entry : entries) {
             if (entry.getCareTime() != null) {
                 entry.setCareTime(LocalDateTime.ofInstant(entry.getCareTime().toInstant(ZoneOffset.UTC), localZone));
