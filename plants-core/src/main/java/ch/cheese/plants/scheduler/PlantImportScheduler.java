@@ -22,7 +22,11 @@ public class PlantImportScheduler {
     public void importOnceOnStartup() {
         log.info("Running initial plant import with Timeline.WEEK");
         if(fytaProperties.getStartLoad() != null && fytaProperties.getStartLoad()) {
-            plantImportService.importPlantsFromFyta(Timeline.WEEK);
+            try {
+                plantImportService.importPlantsFromFyta(Timeline.WEEK);
+            } catch (Exception e) {
+                log.error("Initial plant import failed, app will continue without data: {}", e.getMessage());
+            }
         }
     }
 
