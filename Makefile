@@ -58,9 +58,13 @@ dev:
 
 prod:
 	@echo "🚀 Starting PROD mode (everything in Docker)..."
+	@echo "🛑  Stopping and removing existing containers..."
+	docker compose -f docker-compose.yml down --remove-orphans
+	@echo "🗑️  Removing old image..."
+	docker image rm -f my-plants-plants-core 2>/dev/null || true
 	$(MAKE) PROFILE=prod build
 	docker compose \
 		-f docker-compose.yml \
 		--env-file .env \
 		--env-file .secret \
-		up -d
+		up -d --build
