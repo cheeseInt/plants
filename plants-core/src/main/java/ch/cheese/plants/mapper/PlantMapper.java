@@ -107,47 +107,58 @@ public class PlantMapper {
 
     public void updateEntityWithDetails(PlantEntity entity, FytaPlantDetailResponse detail) {
 
-        entity.setAirtable_id(detail.getPlant().getAirtable_id());
-        if (entity.getGenus() == null && detail.getPlant().getGenus() != null) {
-            entity.setGenus(detail.getPlant().getGenus());
+        FytaPlantDetailResponse.Plant detailPlant = detail.getPlant();
+        entity.setAirtable_id(detailPlant.getAirtable_id());
+        if (entity.getGenus() == null && detailPlant.getGenus() != null) {
+            entity.setGenus(detailPlant.getGenus());
         }
-        entity.setPot_size(detail.getPlant().getPot_size());
-        entity.setDrainage(detail.getPlant().getDrainage());
-        entity.setLight_factor(detail.getPlant().getLight_factor());
-        if (entity.getOwner() == null && detail.getPlant().getOwner() != null) {
-            entity.setOwner(modelMapper.map(detail.getPlant().getOwner(), OwnerEntity.class));
+        if (detailPlant.getPot_size() != null) {
+            entity.setPot_size(detailPlant.getPot_size());
         }
-        entity.setSoil_type_id(detail.getPlant().getSoil_type_id());
-        if (entity.getGathering_data() == null && detail.getPlant().getGathering_data() != null) {
-            entity.setGathering_data(detail.getPlant().getGathering_data());
+        if (detailPlant.getDrainage() != null) {
+            entity.setDrainage(detailPlant.getDrainage());
         }
-        if (entity.getIs_illegal() == null && detail.getPlant().getIs_illegal() != null) {
-            entity.setIs_illegal(detail.getPlant().getIs_illegal());
+        if (detailPlant.getLight_factor() != null) {
+            entity.setLight_factor(detailPlant.getLight_factor());
         }
-        if (entity.getNot_supported() == null && detail.getPlant().getNot_supported() != null) {
-            entity.setNot_supported(detail.getPlant().getNot_supported());
+        if (entity.getOwner() == null && detailPlant.getOwner() != null) {
+            entity.setOwner(modelMapper.map(detailPlant.getOwner(), OwnerEntity.class));
         }
-        if (entity.getSensor_update_available() == null && detail.getPlant().getSensor_update_available() != null) {
-            entity.setSensor_update_available(detail.getPlant().getSensor_update_available());
+        if (detailPlant.getSoil_type_id() != null) {
+            entity.setSoil_type_id(detailPlant.getSoil_type_id());
         }
-        if (entity.getLocation() == null && detail.getPlant().getLocation() != null) {
-            entity.setLocation(detail.getPlant().getLocation());
+        if (entity.getGathering_data() == null && detailPlant.getGathering_data() != null) {
+            entity.setGathering_data(detailPlant.getGathering_data());
         }
-        if (entity.getVerification() == null && detail.getPlant().getVerification() != null) {
-            entity.setVerification(detail.getPlant().getVerification());
+        if (entity.getIs_illegal() == null && detailPlant.getIs_illegal() != null) {
+            entity.setIs_illegal(detailPlant.getIs_illegal());
         }
-        if (entity.getIs_productive_plant() == null && detail.getPlant().getIs_productive_plant() != null) {
-            entity.setIs_productive_plant(detail.getPlant().getIs_productive_plant());
+        if (entity.getNot_supported() == null && detailPlant.getNot_supported() != null) {
+            entity.setNot_supported(detailPlant.getNot_supported());
         }
-        if (entity.getDismissed_sensor_message_at() == null && detail.getPlant().getDismissed_sensor_message_at() != null) {
-            entity.setDismissed_sensor_message_at(LocalDate.parse(detail.getPlant().getDismissed_sensor_message_at(), D_FORMATTER));
+        if (entity.getSensor_update_available() == null && detailPlant.getSensor_update_available() != null) {
+            entity.setSensor_update_available(detailPlant.getSensor_update_available());
         }
-        if (entity.getMeasurements() == null && detail.getPlant().getMeasurements() != null) {
-            entity.setMeasurements(modelMapper.map(detail.getPlant().getMeasurements(), MeasurementsEntity.class));
+        if (entity.getLocation() == null && detailPlant.getLocation() != null) {
+            entity.setLocation(detailPlant.getLocation());
         }
-        entity.setTemperature_unit(detail.getPlant().getTemperature_unit());
-        if (entity.getDevice_menu() == null && detail.getPlant().getDevice_menu() != null) {
-            entity.setDevice_menu(modelMapper.map(detail.getPlant().getDevice_menu(), Device_menuEntity.class));
+        if (entity.getVerification() == null && detailPlant.getVerification() != null) {
+            entity.setVerification(detailPlant.getVerification());
+        }
+        if (entity.getIs_productive_plant() == null && detailPlant.getIs_productive_plant() != null) {
+            entity.setIs_productive_plant(detailPlant.getIs_productive_plant());
+        }
+        if (entity.getDismissed_sensor_message_at() == null && detailPlant.getDismissed_sensor_message_at() != null) {
+            entity.setDismissed_sensor_message_at(LocalDate.parse(detailPlant.getDismissed_sensor_message_at(), D_FORMATTER));
+        }
+        if (entity.getMeasurements() == null && detailPlant.getMeasurements() != null) {
+            entity.setMeasurements(modelMapper.map(detailPlant.getMeasurements(), MeasurementsEntity.class));
+        }
+        if (detailPlant.getTemperature_unit() != null) {
+            entity.setTemperature_unit(detailPlant.getTemperature_unit());
+        }
+        if (entity.getDevice_menu() == null && detailPlant.getDevice_menu() != null) {
+            entity.setDevice_menu(modelMapper.map(detailPlant.getDevice_menu(), Device_menuEntity.class));
         }
     }
 }
