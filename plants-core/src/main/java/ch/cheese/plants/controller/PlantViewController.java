@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,37 @@ public class PlantViewController {
     private final PlantImportService plantImportService;
     private final ZoneId localZone = ZoneId.of("Europe/Zurich");
 
+    /** Fixed dropdown order, by plant id. Plants not listed here go to the end, sorted by nickname. */
+    private static final List<Long> PLANT_DISPLAY_ORDER = List.of(
+            77031L,   // Strelizi
+            79758L,   // Derecha
+            77617L,   // Lotus
+            126230L,  // Rosmarin
+            136495L,  // Basilicum
+            127045L,  // Solanum
+            127390L,  // Cupressus
+            128048L,  // Lilo
+            128047L,  // Rio
+            136509L,  // Gaillardia
+            136498L   // Antirrhinum
+    );
+
+    /**
+     * All plants in the fixed {@link #PLANT_DISPLAY_ORDER}. Any plant whose id is not in that list
+     * is appended after the ordered ones, sorted by nickname, so nothing silently disappears.
+     */
+    private List<PlantEntity> plantsInDisplayOrder() {
+        return plantRepository.findAll().stream()
+                .sorted(Comparator
+                        .comparingInt((PlantEntity p) -> {
+                            int i = PLANT_DISPLAY_ORDER.indexOf(p.getId());
+                            return i < 0 ? Integer.MAX_VALUE : i;
+                        })
+                        .thenComparing(p -> p.getNickname() == null ? "" : p.getNickname(),
+                                String.CASE_INSENSITIVE_ORDER))
+                .toList();
+    }
+
     @PostMapping("/plants/import")
     public String importPlants(@RequestParam("timeline") Timeline timeline, Model model) {
         try {
@@ -37,7 +69,7 @@ public class PlantViewController {
         }
 
         // für Dropdown-Werte + Seite reload
-        model.addAttribute("plants", plantRepository.findAll());
+        model.addAttribute("plants", plantsInDisplayOrder());
         model.addAttribute("timelines", Arrays.stream(Timeline.values()).map(Enum::name).toList());
         return "plants";
     }
@@ -48,7 +80,7 @@ public class PlantViewController {
                                   @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
                                   Model model) {
 
-        List<PlantEntity> plants = plantRepository.findAll();
+        List<PlantEntity> plants = plantsInDisplayOrder();
         List<PlantCareEntryEntity> entries = plantCareRepository.findAll().stream()
                 .filter(entry -> nickname == null || nickname.isBlank() || entry.getPlant().getNickname().equalsIgnoreCase(nickname))
                 .filter(entry -> date == null || entry.getCareTime().toLocalDate().isEqual(date))
@@ -70,7 +102,7 @@ public class PlantViewController {
 
     @GetMapping("/plants")
     public String showPlants(Model model) {
-        model.addAttribute("plants", plantRepository.findAll());
+        model.addAttribute("plants", plantsInDisplayOrder());
         model.addAttribute("timelines", Arrays.stream(Timeline.values()).map(Enum::name).toList());
         return "plants";
     }
