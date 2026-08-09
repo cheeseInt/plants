@@ -32,7 +32,7 @@ public class PlantViewController {
     private static final List<Long> PLANT_DISPLAY_ORDER = List.of(
             77617L,   // Lotus
             138656L,  // Lefti
-            137082L,  // Pink Lady
+            138862L,  // Pink Lady
             126230L,  // Rosmarin
             128048L,  // Lilo
             128047L   // Rio
