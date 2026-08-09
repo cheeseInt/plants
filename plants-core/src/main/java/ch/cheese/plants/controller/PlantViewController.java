@@ -28,34 +28,24 @@ public class PlantViewController {
     private final PlantImportService plantImportService;
     private final ZoneId localZone = ZoneId.of("Europe/Zurich");
 
-    /** Fixed dropdown order, by plant id. Plants not listed here go to the end, sorted by nickname. */
+    /** The only plants shown in the UI, in exactly this order. Everything else is hidden. */
     private static final List<Long> PLANT_DISPLAY_ORDER = List.of(
-            77031L,   // Strelizi
-            79758L,   // Derecha
             77617L,   // Lotus
+            138656L,  // Lefti
+            137082L,  // Pink Lady
             126230L,  // Rosmarin
-            136495L,  // Basilicum
-            127045L,  // Solanum
-            127390L,  // Cupressus
             128048L,  // Lilo
-            128047L,  // Rio
-            136509L,  // Gaillardia
-            136498L   // Antirrhinum
+            128047L   // Rio
     );
 
     /**
-     * All plants in the fixed {@link #PLANT_DISPLAY_ORDER}. Any plant whose id is not in that list
-     * is appended after the ordered ones, sorted by nickname, so nothing silently disappears.
+     * The plants from {@link #PLANT_DISPLAY_ORDER} that exist in the database, in that exact order.
+     * Plants whose id is not listed are imported as usual but never shown.
      */
     private List<PlantEntity> plantsInDisplayOrder() {
         return plantRepository.findAll().stream()
-                .sorted(Comparator
-                        .comparingInt((PlantEntity p) -> {
-                            int i = PLANT_DISPLAY_ORDER.indexOf(p.getId());
-                            return i < 0 ? Integer.MAX_VALUE : i;
-                        })
-                        .thenComparing(p -> p.getNickname() == null ? "" : p.getNickname(),
-                                String.CASE_INSENSITIVE_ORDER))
+                .filter(p -> PLANT_DISPLAY_ORDER.contains(p.getId()))
+                .sorted(Comparator.comparingInt((PlantEntity p) -> PLANT_DISPLAY_ORDER.indexOf(p.getId())))
                 .toList();
     }
 
