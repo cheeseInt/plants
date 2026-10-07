@@ -31,9 +31,10 @@ public class PlantViewController {
     /** The only plants shown in the UI, in exactly this order. Everything else is hidden. */
     private static final List<Long> PLANT_DISPLAY_ORDER = List.of(
             77617L,   // Lotus
-            138656L,  // Lefti
-            138862L,  // Pink Lady
-            126230L,  // Rosmarin
+            144389L,  // Lorbee
+            144483L,  // Erica
+            144482L,  // Calluna
+            127390L,  // Cupressus
             128048L,  // Lilo
             128047L   // Rio
     );
